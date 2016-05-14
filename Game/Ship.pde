@@ -46,14 +46,14 @@ public class Ship{
   }
   
   public void increaseOrnt(){
-    orientation ++;
+    orientation += .05;
     if(orientation == 360){
       orientation = 0;
     }
   }
   
   public void decreaseOrnt(){
-    orientation --;
+    orientation -= .05;
     if(orientation == 0){
       orientation = 360;
     }
