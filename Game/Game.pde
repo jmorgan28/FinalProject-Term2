@@ -20,9 +20,9 @@ void input(){
   if (keyPressed && key == 'd'){
     ships[0].increaseOrnt();
   }
-  if (keyPressed && key == 'a'){
-    ships[0].decreaseOrnt();
-  }
+  //if (keyPressed && key == 'a'){
+    //ships[0].decreaseOrnt();
+  //}
 }
              
     
