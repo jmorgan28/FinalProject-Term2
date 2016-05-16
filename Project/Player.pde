@@ -13,8 +13,8 @@ public class Player implements Displayable {
   }
 
   public void move() {
-    x += speed * cos(radians(heading));
-    y += speed * sin(radians(heading));
+    x += speed * cos(heading);
+    y += speed * sin(heading);
   }
   
   public boolean state() {
@@ -26,6 +26,8 @@ public class Player implements Displayable {
 
   public void display() {
     fill(255);
-    ellipse(x, y, size, size);
+        triangle((float)(x + (30 * Math.cos(heading))), (float)(y + (30 * Math.sin(heading))),
+             (float)(x + (30 * Math.cos(heading - 90))), (float)(y + (30 * Math.sin(heading - 90))),
+             (float)(x + (30 * Math.cos(heading + 90))), (float)(y + (30 * Math.sin(heading + 90))));
   }
 }

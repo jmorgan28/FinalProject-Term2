@@ -60,7 +60,7 @@ public void draw() {
     if (p.designation==myPlayer) {
       p.move();
       if (dDown) {
-        p.heading+=1;
+        p.heading+=.05;
       }
       if (aDown) {
         Bullet b = new Bullet(p.x, p.y, p.heading);
