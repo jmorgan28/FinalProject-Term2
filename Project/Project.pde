@@ -1,3 +1,5 @@
+import processing.net.*;
+
 public interface Positionable {
   public boolean state();
 }
@@ -24,7 +26,9 @@ boolean aDown, dDown;
 
 public void setup() {
   size(600, 400);
-
+  if (myPlayer == 0){ 
+   //myServer = new Server(this, 5204);  
+  }
   for (int i = 0; i < playerCount; i++) {
     Player p = new Player(i);
     displayables.add(p);
