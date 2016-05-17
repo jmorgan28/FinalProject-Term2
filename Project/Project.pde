@@ -23,11 +23,13 @@ int myPlayer=0;
 
 boolean aDown, dDown;
 
+Server myServer;
+Client myClient = new Client(this,"127.0.0.1", 5204); 
 
 public void setup() {
   size(600, 400);
   if (myPlayer == 0){ 
-   //myServer = new Server(this, 5204);  
+   myServer = new Server(this, 5204);  
   }
   for (int i = 0; i < playerCount; i++) {
     Player p = new Player(i);
@@ -72,11 +74,12 @@ public void draw() {
         positionables.add(b);
         moveables.add(b);
       }
+      myServer.write( "" +0 + "x:" + p.x + "," + "y:" + p.y + "," + "head:" + p.heading + "\n");
     } else {
     }
   }
 
-
+  System.out.println(myClient.readString());
   for ( Moveable m : moveables) {
     m.move();
     m.collide(positionables);
