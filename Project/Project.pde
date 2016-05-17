@@ -23,14 +23,17 @@ int myPlayer=0;
 
 boolean aDown, dDown;
 
-Server myServer;
-Client myClient = new Client(this,"127.0.0.1", 5204); 
+Server server;
+Client myClient;
 
 public void setup() {
   size(600, 400);
   if (myPlayer == 0){ 
-   myServer = new Server(this, 5204);  
+     server=new Server(this,6666);
   }
+  
+  myClient=new Client(this,"127.0.0.1",6666);
+  
   for (int i = 0; i < playerCount; i++) {
     Player p = new Player(i);
     displayables.add(p);
@@ -74,7 +77,7 @@ public void draw() {
         positionables.add(b);
         moveables.add(b);
       }
-      myServer.write( "" +0 + "x:" + p.x + "," + "y:" + p.y + "," + "head:" + p.heading + "\n");
+      //myClient.write( "" +0 + "x:" + p.x + "," + "y:" + p.y + "," + "head:" + p.heading + "\n");
     } else {
     }
   }
