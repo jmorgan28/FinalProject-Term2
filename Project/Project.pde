@@ -62,9 +62,32 @@ public void keyReleased() {
 public void delete(float x, float y) {
 }
 
+public void send(){
+  for (Player p : players) {
+    if (p.designation==myPlayer) {
+      server.write("" + p.x+ "," + p.y + "," + p.heading);
+    }
+  }
+}
+
+public void read(){
+  String line = "wow";
+ 
+  Client playa=server.available();
+        if (playa !=null) {
+          line = playa.readString();
+        }
+       System.out.println(line);
+
+}
+  
+
+
+
 public void draw() {
   background(0);
-
+ send();
+ //read();
   for (Player p : players) {
     if (p.designation==myPlayer) {
       p.move();
@@ -72,10 +95,12 @@ public void draw() {
         p.heading+=.05;
       }
       if (aDown) {
+        if(p.canShoot()){
         Bullet b = new Bullet(p.x, p.y, p.heading);
         displayables.add(b);
         positionables.add(b);
         moveables.add(b);
+        }
       }
     } else {
       String info;
