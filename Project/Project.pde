@@ -95,8 +95,8 @@ public void draw() {
         p.heading+=.05;
       }
       if (aDown) {
-        if(p.canShoot()){
-        Bullet b = new Bullet(p.x, p.y, p.heading);
+        if(p.time > 15 && p.canShoot() ){
+        Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
         displayables.add(b);
         positionables.add(b);
         moveables.add(b);

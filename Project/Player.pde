@@ -1,5 +1,5 @@
 public class Player implements Displayable {
-  float x, y, heading, speed, size, lim;
+  float x, y, heading, speed, size, lim, time;
   boolean state;
   int designation;
   public Player(int number) {
@@ -11,11 +11,13 @@ public class Player implements Displayable {
     designation=number;
     size=20;
     lim = 3;
+    time = 0;
   }
 
   public void move() {
     x += speed * cos(heading);
     y += speed * sin(heading);
+    time ++;
   }
   
   public boolean state() {
@@ -24,12 +26,13 @@ public class Player implements Displayable {
   
   public boolean canShoot(){
     lim --;
-    if(lim < -54){
-      lim = 3;
+    if(lim < -75){
+      lim = 2;
     }
     if(lim + 1 <= 0){
       return false;}
      if(lim + 1 > 0){
+       time =0;
        return true;}
        return false;
   }
