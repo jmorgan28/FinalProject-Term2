@@ -40,6 +40,7 @@ public void setup() {
     positionables.add(p);
     players.add(p);
   }
+  displayables.add(new Block(0,0,30,30));
 }
 
 public void keyPressed() {
