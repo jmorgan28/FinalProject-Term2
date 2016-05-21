@@ -18,6 +18,8 @@ ArrayList<Displayable> displayables = new ArrayList<Displayable>();
 ArrayList<Positionable> positionables = new ArrayList<Positionable>();
 ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Block> blocks = new ArrayList<Block>();
+ArrayList<Warp> warp = new ArrayList<Warp>();
+
 
 int playerCount=1;
 int myPlayer=0;
@@ -36,8 +38,11 @@ public void setup() {
   displayables.add(new Block(20, 380, 560, 20, 100));
   displayables.add(new Block(300, 200, 20, 20, 100));
   for(int i = 0; i < displayables.size(); i ++){
-    blocks.add((Block)(displayables.get(i)));
+    blocks.add((Block)(displayables.get(i)));      
   }
+  Warp w = new Warp(80,50, 13,150); 
+  displayables.add(w);
+  warp.add(w);
 
 }
 
@@ -77,6 +82,26 @@ public void collision(){
     }
   }
 }
+
+public void warped(){ // too be made accurate later
+  for(int i = 0; i < moveables.size(); i ++){
+    for(int k = 0; k < warp.size(); k ++){ 
+     if(moveables.get(i) instanceof Bullet){
+         Bullet temp = (Bullet) moveables.get(i);
+         if(warp.get(k).amWarp(temp.x, temp.y)){
+           if(temp.heading + 180 > 360){
+             temp.heading = 0 + (temp.heading + 180 - 360);
+           }
+           else{
+             temp.heading += 180;
+           }
+       }
+      }
+    }
+  }
+}
+
+
 public void keyReleased() {
   if (key=='a') {
     aDown=false;
@@ -131,9 +156,6 @@ public void parse(String s){
      players.get(des).heading = hea;
    }
      
-
-
-
 }
 
 
@@ -179,6 +201,7 @@ public void draw() {
           }
         }
         collision();
+        warped();
         send(p);
       } else {
         String info;
