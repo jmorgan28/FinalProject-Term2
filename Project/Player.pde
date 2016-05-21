@@ -44,8 +44,15 @@ public class Player implements Displayable {
 
   public void display() {
     fill(255);
-    triangle((float)(x + (30 * Math.cos(heading))), (float)(y + (30 * Math.sin(heading))), 
-      (float)(x + (30 * Math.cos(heading - 90))), (float)(y + (30 * Math.sin(heading - 90))), 
-      (float)(x + (30 * Math.cos(heading + 90))), (float)(y + (30 * Math.sin(heading + 90))));
+    triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
+      (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
+      (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
+  }
+    public float getX(){
+    return x;
+  }
+  
+  public float getY(){
+    return y;
   }
 }

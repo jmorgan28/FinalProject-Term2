@@ -17,6 +17,7 @@ ArrayList<Moveable> moveables = new ArrayList<Moveable>();
 ArrayList<Displayable> displayables = new ArrayList<Displayable>();
 ArrayList<Positionable> positionables = new ArrayList<Positionable>();
 ArrayList<Player> players = new ArrayList<Player>();
+ArrayList<Block> blocks = new ArrayList<Block>();
 
 int playerCount=1;
 int myPlayer=0;
@@ -28,8 +29,15 @@ Client client;
 
 public void setup() {
   size(600, 400);
+  menu = true;
+  displayables.add(new Block(0, 0, 20, 400, 100));
+  displayables.add(new Block(580, 0, 20, 400, 100));
+  displayables.add(new Block(20, 0, 560, 20, 100));
+  displayables.add(new Block(20, 380, 560, 20, 100));
+  for(int i = 0; i < displayables.size(); i ++){
+    blocks.add((Block)(displayables.get(i)));
+  }
 
-  displayables.add(new Block(0, 0, 30, 30));
 }
 
 public void keyPressed() {
@@ -38,6 +46,23 @@ public void keyPressed() {
   }
   if (key=='d') { 
     dDown=true;
+  }
+}
+
+public void collision(){
+  for(int i = 0; i < moveables.size(); i ++){
+    for(int k = 0; k < blocks.size(); k ++){ 
+       if(moveables.get(i) instanceof Bullet){
+         Bullet temp = (Bullet) moveables.get(i);
+        if(blocks.get(k).amBox(temp.x, temp.y)){ 
+          displayables.remove(temp);
+          positionables.remove(temp);
+          moveables.remove(temp);
+          k = blocks.size();
+          i --;
+        }  
+      }
+    }
   }
 }
 public void keyReleased() {
@@ -73,6 +98,7 @@ public String read() {
 public void draw() {
   background(0);
   if (menu) {
+    amServer = true;
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer) {
       myPlayer = 0;
@@ -108,6 +134,7 @@ public void draw() {
             moveables.add(b);
           }
         }
+        collision();
         send(p);
       } else {
         String info;

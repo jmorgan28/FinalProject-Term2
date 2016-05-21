@@ -26,4 +26,12 @@ public class Bullet implements Moveable, Displayable {
     fill(255);
     ellipse(x, y, size, size);
   }
+  
+  public float getX(){
+    return x;
+  }
+  
+  public float getY(){
+    return y;
+  }
 }
