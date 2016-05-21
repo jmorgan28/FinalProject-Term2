@@ -16,7 +16,7 @@ public class Bullet implements Moveable, Displayable {
 
   public void move() {
     x += speed * cos((heading)); 
-    y += speed * sin((heading)); 
+    y += speed * sin((heading));
   }
 
   public void collide(ArrayList<Positionable> others) {

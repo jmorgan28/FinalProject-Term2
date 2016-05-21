@@ -21,26 +21,15 @@ ArrayList<Player> players = new ArrayList<Player>();
 int playerCount=1;
 int myPlayer=0;
 
-boolean aDown, dDown;
+boolean aDown, dDown, menu, amServer, amClient;
 
 Server server;
 Client client;
 
 public void setup() {
   size(600, 400);
-  if (myPlayer == 0) { 
-    server=new Server(this, 6666);
-  }
-  else{
-    client=new Client(this, "127.0.0.1", 6666);
-  }
-  for (int i = 0; i < playerCount; i++) {
-    Player p = new Player(i);
-    displayables.add(p);
-    positionables.add(p);
-    players.add(p);
-  }
-  displayables.add(new Block(0,0,30,30));
+
+  displayables.add(new Block(0, 0, 30, 30));
 }
 
 public void keyPressed() {
@@ -63,92 +52,106 @@ public void keyReleased() {
 public void delete(float x, float y) {
 }
 
-public void send(){
-  for (Player p : players) {
-    if (p.designation==myPlayer) {
-      server.write("" + p.x+ "," + p.y + "," + p.heading);
-    }
+public void send(Player p) {
+  //we need some sort of int like didShoot and gotShot in player to send along with this stuff
+  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+",");
+}
+
+public String read() {
+  String line = "";
+
+  Client player=server.available();
+  if (player !=null) {
+    line = player.readString();
   }
+  return line;
 }
 
-public void read(){
-  String line = "wow";
- 
-  Client playa=server.available();
-        if (playa !=null) {
-          line = playa.readString();
-        }
-       System.out.println(line);
-
-}
-  
 
 
 
 public void draw() {
   background(0);
- send();
- //read();
-  for (Player p : players) {
-    if (p.designation==myPlayer) {
-      p.move();
-      if (dDown) {
-        p.heading+=.05;
+  if (menu) {
+    // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
+    if (amServer) {
+      myPlayer = 0;
+      server=new Server(this, 6666); 
+      menu=false;
+    }
+    if (amClient) {
+      client=new Client(this, "127.0.0.1", 6666);
+      myPlayer=(int)random(10^10)+1;
+      menu=false;
+    }
+    if (!menu) {
+      for (int i = 0; i < playerCount; i++) {
+        Player p = new Player(i);
+        displayables.add(p);
+        positionables.add(p);
+        players.add(p);
       }
-      if (aDown) {
-        if(p.time > 15 && p.canShoot() ){
-        Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-        displayables.add(b);
-        positionables.add(b);
-        moveables.add(b);
+    }
+  } else {
+
+    for (Player p : players) {
+      if (p.designation==myPlayer) {
+        p.move();
+        if (dDown) {
+          p.heading+=.05;
         }
-      }
-    } else {
-      String info;
-      if (myPlayer==0) {
-        Client player=server.available();
-        if (player !=null) {
-          info = player.readString();
-          if (info != null) {
-            server.write(info);
-            
+        if (aDown) {
+          if (p.time > 15 && p.canShoot() ) {
+            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+            displayables.add(b);
+            positionables.add(b);
+            moveables.add(b);
           }
         }
+        send(p);
+      } else {
+        String info;
+        if (myPlayer==0) {
+          info=read();
+          if (info != "") {
+            server.write(info);
+            //info is ALL client messages from ONE client that have not yet been read in string form; do string stuff here
+          }
+        } else {
+          info = client.readString();
+          //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
+        }
       }
-      else{
-        info = client.readString();
-        
+    }
+    if (myPlayer!=0) {
+      client.clear();
+    }
+
+    for ( Moveable m : moveables) {
+      m.move();
+      m.collide(positionables);
+    }
+
+    for ( Displayable d : displayables) {
+      d.display();
+    }
+
+    for (int i = moveables.size() - 1; i >= 0; i--) {
+      if (!moveables.get(i).state()) {
+        moveables.remove(i);
       }
     }
-  }
-  if(myPlayer!=0){
-    client.clear();
-  }
 
-  for ( Moveable m : moveables) {
-    m.move();
-    m.collide(positionables);
-  }
-
-  for ( Displayable d : displayables) {
-    d.display();
-  }
-
-  for (int i = moveables.size() - 1; i >= 0; i--) {
-    if (!moveables.get(i).state()) {
-      moveables.remove(i);
+    for (int i = displayables.size() - 1; i >= 0; i--) {
+      if (!displayables.get(i).state()) {
+        displayables.remove(i);
+      }
     }
-  }
 
-  for (int i = displayables.size() - 1; i >= 0; i--) {
-    if (!displayables.get(i).state()) {
-      displayables.remove(i);
-    }
-  }
-
-  for (int i = positionables.size() - 1; i >= 0; i--) {
-    if (!positionables.get(i).state()) {
-      positionables.remove(i);
+    for (int i = positionables.size() - 1; i >= 0; i--) {
+      if (!positionables.get(i).state()) {
+        positionables.remove(i);
+      }
     }
   }
 }

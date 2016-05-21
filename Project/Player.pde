@@ -19,22 +19,24 @@ public class Player implements Displayable {
     y += speed * sin(heading);
     time ++;
   }
-  
+
   public boolean state() {
     return state;
   }
-  
-  public boolean canShoot(){
+
+  public boolean canShoot() {
     lim --;
-    if(lim < -75){
+    if (lim < -75) {
       lim = 2;
     }
-    if(lim + 1 <= 0){
-      return false;}
-     if(lim + 1 > 0){
-       time =0;
-       return true;}
-       return false;
+    if (lim + 1 <= 0) {
+      return false;
+    }
+    if (lim + 1 > 0) {
+      time =0;
+      return true;
+    }
+    return false;
   }
 
   public void collide(ArrayList<Positionable> others) {
@@ -42,8 +44,8 @@ public class Player implements Displayable {
 
   public void display() {
     fill(255);
-        triangle((float)(x + (30 * Math.cos(heading))), (float)(y + (30 * Math.sin(heading))),
-             (float)(x + (30 * Math.cos(heading - 90))), (float)(y + (30 * Math.sin(heading - 90))),
-             (float)(x + (30 * Math.cos(heading + 90))), (float)(y + (30 * Math.sin(heading + 90))));
+    triangle((float)(x + (30 * Math.cos(heading))), (float)(y + (30 * Math.sin(heading))), 
+      (float)(x + (30 * Math.cos(heading - 90))), (float)(y + (30 * Math.sin(heading - 90))), 
+      (float)(x + (30 * Math.cos(heading + 90))), (float)(y + (30 * Math.sin(heading + 90))));
   }
 }
