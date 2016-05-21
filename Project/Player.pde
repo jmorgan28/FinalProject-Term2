@@ -1,6 +1,6 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
-  boolean state;
+  boolean state, collide;
   int designation;
   public Player(int number) {
     x=100;
@@ -12,11 +12,16 @@ public class Player implements Displayable {
     size=20;
     lim = 3;
     time = 0;
+    collide = false;
   }
 
   public void move() {
     x += speed * cos(heading);
     y += speed * sin(heading);
+    if(collide){
+    x += speed * cos(heading);
+    y += speed * sin(heading);
+    }
     time ++;
   }
 
@@ -48,6 +53,11 @@ public class Player implements Displayable {
       (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
       (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
   }
+  
+  public void setCol(boolean b){
+    collide = b;
+  }
+    
     public float getX(){
     return x;
   }

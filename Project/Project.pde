@@ -34,6 +34,7 @@ public void setup() {
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
   displayables.add(new Block(20, 380, 560, 20, 100));
+  displayables.add(new Block(300, 200, 20, 20, 100));
   for(int i = 0; i < displayables.size(); i ++){
     blocks.add((Block)(displayables.get(i)));
   }
@@ -62,6 +63,17 @@ public void collision(){
           i --;
         }  
       }
+      else{
+      if(moveables.get(i) instanceof Player){
+        Player tmp = (Player) moveables.get(i);
+        if(blocks.get(k).amBox(tmp.x, tmp.y)){ // this has to be made to check for all tips of triangle 
+          tmp.setCol(true); // this nees to do something to hold back or turn triangle
+        }
+        else{tmp.setCol(false);}
+      }
+      }
+
+
     }
   }
 }
@@ -92,12 +104,44 @@ public String read() {
   return line;
 }
 
+public void parse(String s){
+  String designation = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",") + 1);
+  String x = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",") + 1);
+  String y = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",") + 1);
+  String heading = s.substring(0, s.indexOf(","));
+  float xVal = Float.parseFloat(x);
+  float yVal = Float.parseFloat(y);
+  float hea = Float.parseFloat(heading);
+  int des = Integer.parseInt(designation);
+  if(players.size() < des){
+     Player p = new Player(des);
+     p.x = xVal;
+     p.y= yVal;
+     p.heading = hea;
+     displayables.add(p);
+     positionables.add(p);
+     players.add(p);   
+   }
+   else{
+     players.get(des).x = xVal;
+     players.get(des).y = yVal;
+     players.get(des).heading = hea;
+   }
+     
+
+
+
+}
+
 
 
 
 public void draw() {
   background(0);
-  if (menu) {
+  if (menu) { 
     amServer = true;
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer) {
@@ -146,6 +190,7 @@ public void draw() {
           }
         } else {
           info = client.readString();
+          parse(info);
           //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
         }
       }
