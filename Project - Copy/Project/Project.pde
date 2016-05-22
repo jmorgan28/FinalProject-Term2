@@ -217,7 +217,9 @@ public void draw() {
         } else {
           info = client.readString();
           System.out.println(info);
+          if(info != null){
           parse(info);
+          }
           //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
         }
       }
