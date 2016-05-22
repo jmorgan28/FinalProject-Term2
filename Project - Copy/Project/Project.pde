@@ -29,9 +29,12 @@ boolean aDown, dDown, menu, amServer, amClient;
 Server server;
 Client client;
 
+
 public void setup() {
   size(600, 400);
   menu = true;
+  amClient = true;
+  amServer = false;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -164,7 +167,7 @@ public void parse(String s){
 public void draw() {
   background(0);
   if (menu) { 
-    amServer = true;
+    amServer = false;
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer) {
       myPlayer = 0;
@@ -213,9 +216,8 @@ public void draw() {
           }
         } else {
           info = client.readString();
-          if(info != null){
+          System.out.println(info);
           parse(info);
-          }
           //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
         }
       }
