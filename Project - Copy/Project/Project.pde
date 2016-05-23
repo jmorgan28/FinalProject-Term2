@@ -118,6 +118,8 @@ public void delete(float x, float y) {
 }
 
 public void send(Player p) {
+  client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot); //+ "," + playerCount);
+  p.shot = false;
   //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
 }
 

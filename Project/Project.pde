@@ -21,7 +21,7 @@ ArrayList<Block> blocks = new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
 
 
-int playerCount=1;
+int playerCount=2;
 int myPlayer=0;
 
 boolean aDown, dDown, menu, amServer, amClient;
@@ -116,7 +116,7 @@ public void delete(float x, float y) {
 
 public void send(Player p) {
   //we need some sort of int like didShoot and gotShot in player to send along with this stuff
-  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot);
+  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot); //+ "," + playerCount);
   p.shot = false;
 }
 
@@ -220,6 +220,7 @@ public void draw() {
           info=read();
           if (info != "") {
             server.write(info);
+                      parse(info);
             //info is ALL client messages from ONE client that have not yet been read in string form; do string stuff here
           }
         } else {
