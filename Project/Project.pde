@@ -116,7 +116,8 @@ public void delete(float x, float y) {
 
 public void send(Player p) {
   //we need some sort of int like didShoot and gotShot in player to send along with this stuff
-  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+",");
+  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot);
+  p.shot = false;
 }
 
 public String read() {
@@ -137,6 +138,8 @@ public void parse(String s){
   String y = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
   String heading = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",") + 1);
+  String shot = s;
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
@@ -155,6 +158,14 @@ public void parse(String s){
      players.get(des).y = yVal;
      players.get(des).heading = hea;
    }
+   if(shot.equals("true")){
+     Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
+            displayables.add(b);
+            positionables.add(b);
+            moveables.add(b);
+   }
+     
+ 
      
 }
 
