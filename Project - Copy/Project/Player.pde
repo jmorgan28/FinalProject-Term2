@@ -1,6 +1,6 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
-  boolean state, collide;
+  boolean state, collide, shot;
   int designation;
   public Player(int number) {
     x=100;
@@ -39,6 +39,7 @@ public class Player implements Displayable {
     }
     if (lim + 1 > 0) {
       time =0;
+      shot = true;
       return true;
     }
     return false;

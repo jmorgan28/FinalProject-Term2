@@ -21,7 +21,7 @@ ArrayList<Block> blocks = new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
 
 
-int playerCount=1;
+int playerCount=2;
 int myPlayer=0;
 
 boolean aDown, dDown, menu, amServer, amClient;
@@ -118,8 +118,7 @@ public void delete(float x, float y) {
 }
 
 public void send(Player p) {
-  //we need some sort of int like didShoot and gotShot in player to send along with this stuff
-  server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+",");
+  //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
 }
 
 public String read() {
@@ -140,6 +139,8 @@ public void parse(String s){
   String y = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
   String heading = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",") + 1);
+  String shot = s;
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
@@ -158,6 +159,14 @@ public void parse(String s){
      players.get(des).y = yVal;
      players.get(des).heading = hea;
    }
+   if(shot.equals("true")){
+     Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
+            displayables.add(b);
+            positionables.add(b);
+            moveables.add(b);
+   }
+     
+ 
      
 }
 
@@ -178,6 +187,7 @@ public void draw() {
       client=new Client(this, "127.0.0.1", 6666);
       myPlayer=(int)random(10^10)+1;
       menu=false;
+      //playerCount ++;
     }
     if (!menu) {
       for (int i = 0; i < playerCount; i++) {
@@ -216,7 +226,6 @@ public void draw() {
           }
         } else {
           info = client.readString();
-          System.out.println(info);
           if(info != null){
           parse(info);
           }
