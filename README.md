@@ -34,7 +34,19 @@ Jackson: <br>
 - made parse function to read and use info from the server<br>
 - balanced stuff and changed sizes of things<br>
 
+5/22/16 <br>
 
+Jackson: <br>
+
+- made copy of program to test<br>
+- got basic multiplayer (one person moves an it appears on screen of the other) working <br>
+
+
+5/23/16 <br>
+
+Jackson: <br>
+- got multiplayer working for up to 2 players<br>
+- got bullets working one way only<br>
 
 
 <br>
