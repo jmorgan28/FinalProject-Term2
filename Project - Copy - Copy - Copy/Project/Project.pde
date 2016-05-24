@@ -21,7 +21,7 @@ ArrayList<Block> blocks = new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
 
 
-int playerCount=3;
+int playerCount=4;
 int myPlayer=0;
 
 boolean aDown, dDown, menu, amServer, amClient;
@@ -32,7 +32,7 @@ Client client;
 public void setup() {
   size(600, 400);
   menu = true;
-  amServer=true;
+  amClient=true;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -120,7 +120,7 @@ public void send(Player p) {
     }
     p.shot = 0;
   }
-  catch(Exception e) {
+  catch(Exception e){
     send(p);
   }
   //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
@@ -202,34 +202,7 @@ public void parse(String s) {
   }
 }
 
-public void playerMovement() {
-  try {
-    for (Player p : players) {
-      if (p.designation==myPlayer) {
-        p.move();
-        if (dDown) {
-          p.heading+=.05;
-        }
-        if (aDown) {
-          if (p.time > 15 && p.canShoot() ) {
-            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-            displayables.add(b);
-            positionables.add(b);
-            moveables.add(b);
-          }
-        }
-        collision();
-        warped();
-        send(p);
-      } else {
-        read();
-      }
-    }
-  }
-  catch(Exception e) {
-    playerMovement();
-  }
-}
+
 
 
 public void draw() {
@@ -256,8 +229,27 @@ public void draw() {
     }
   } else {
 
-    playerMovement();
-
+    for (Player p : players) {
+      if (p.designation==myPlayer) {
+        p.move();
+        if (dDown) {
+          p.heading+=.05;
+        }
+        if (aDown) {
+          if (p.time > 15 && p.canShoot() ) {
+            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+            displayables.add(b);
+            positionables.add(b);
+            moveables.add(b);
+          }
+        }
+        collision();
+        warped();
+        send(p);
+      } else {
+        read();
+      }
+    }
     if (myPlayer!=0) {
       client.clear();
     }
