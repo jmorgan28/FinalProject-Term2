@@ -27,8 +27,8 @@ Jackson: <br>
 5/21/16 <br>
 
 Matthew:<br>
--set up server to client and vice versa messaging
--must specify total number of players before start
+-set up server to client and vice versa messaging<br>
+-must specify total number of players before start<br>
 <br>
 Jackson: <br>
 
@@ -53,9 +53,9 @@ Jackson: <br>
 - got bullets working one way only<br>
 <br>
 Matthew:<br>
-- bullets work both ways
-- works with theoretically as many as you want(only tried up to 4)
-- merged project and project-copy so only difference is boolean specifying if client or server
+- bullets work both ways<br>
+- works with theoretically as many as you want(only tried up to 4)<br>
+- merged project and project-copy so only difference is boolean specifying if client or server<br>
 
 <br>
 To Do:<br>
