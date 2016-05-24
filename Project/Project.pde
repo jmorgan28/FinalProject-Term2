@@ -19,9 +19,11 @@ ArrayList<Positionable> positionables = new ArrayList<Positionable>();
 ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Block> blocks = new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
+PFont c, s;
 
 
-int playerCount=3;
+
+int playerCount=2;
 int myPlayer=0;
 
 boolean aDown, dDown, menu, amServer, amClient;
@@ -31,8 +33,11 @@ Client client;
 
 public void setup() {
   size(600, 400);
+  c = createFont("Arial", 16, true);
+  s = createFont("Arial", 16, true);
   menu = true;
-  amServer=true;
+  amServer=false;
+  amClient = false;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -53,6 +58,30 @@ public void keyPressed() {
   if (key=='d') { 
     dDown=true;
   }
+}
+
+public void makeMenu(){
+ background(255,0,0); 
+ textFont(c, 36);
+ fill(255);
+ text("Join as Server", 0, 150);
+ textFont(s, 36);
+ fill(255);
+ text("Join as Client", 0, 300);
+ if(mousePressed){
+   if(mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100){
+     amServer = true;
+     //playerCount ++;
+   }
+   else{if(mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250){
+     amClient = true;
+   }
+   }
+     
+ }
+   
+
+  
 }
 
 public void collision() {
@@ -114,9 +143,9 @@ public void delete(float x, float y) {
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","); //+ "," + playerCount);
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","  + playerCount + "," );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","); //+ "," + playerCount);
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","  + playerCount + "," );
     }
     p.shot = 0;
   }
@@ -176,7 +205,13 @@ public void parse(String s) {
   if (nullCheck(s)) {
     return;
   }
-  int shot = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
+  String sh = s.substring(0, s.indexOf(","));
+  s = s.substring(s.indexOf(",")+1);
+  if (nullCheck(s)) {
+    return;
+  }
+  int play = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
+  int shot = (int)Float.parseFloat(sh);
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
@@ -186,9 +221,10 @@ public void parse(String s) {
     p.x = xVal;
     p.y= yVal;
     p.heading = hea;
+    playerCount = play;
     displayables.add(p);
     positionables.add(p);
-    players.add(p);
+   players.add(p);
   } else {
     players.get(des).x = xVal;
     players.get(des).y = yVal;
@@ -235,6 +271,7 @@ public void playerMovement() {
 public void draw() {
   background(0);
   if (menu) { 
+    makeMenu();
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer) {
       myPlayer = 0;
