@@ -121,43 +121,54 @@ public void send(Player p) {
   //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
 }
 
-public String read() {
-  String line = "";
-
-  Client player=server.available();
-  if (player !=null) {
-    line = player.readString();
+public void read() {
+  try {
+    String line="";
+    if (amServer) {
+      Client player=server.available();
+      if (player !=null) {
+        line = player.readString();
+      }
+      if (!line.equals("")) {
+        server.write(line);
+      }
+    } else {
+      line = client.readString();
+    }
+    parse(line);
   }
-  return line;
+  catch(Exception e){
+    read();
+  }
 }
-private boolean nullCheck(String s){
-  if(s.indexOf(",")==-1){
+private boolean nullCheck(String s) {
+  if (s.indexOf(",")==-1) {
     return true;
   }
   return false;
 }
 public void parse(String s) {
-  if(nullCheck(s)){
+  if (nullCheck(s)) {
     return;
   }
   String designation = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
-  if(nullCheck(s)){
+  if (nullCheck(s)) {
     return;
   }
   String x = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
-  if(nullCheck(s)){
+  if (nullCheck(s)) {
     return;
   }
   String y = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
-  if(nullCheck(s)){
+  if (nullCheck(s)) {
     return;
   }
   String heading = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",")+1);
-  if(nullCheck(s)){
+  if (nullCheck(s)) {
     return;
   }
   int shot = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
@@ -231,21 +242,7 @@ public void draw() {
         warped();
         send(p);
       } else {
-        String info;
-        if (myPlayer==0) {
-          info=read();
-          if (info != "") {
-            server.write(info);
-            parse(info);
-            //info is ALL client messages from ONE client that have not yet been read in string form; do string stuff here
-          }
-        } else {
-          info = client.readString();
-          if (info != null) {
-            parse(info);
-          }
-          //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
-        }
+        read();
       }
     }
     if (myPlayer!=0) {
