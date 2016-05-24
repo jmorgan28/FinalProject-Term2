@@ -1,7 +1,7 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
-  boolean state, collide, shot;
-  int designation;
+  boolean state, collide;
+  int designation, shot;
   public Player(int number) {
     x=100;
     y=100;
@@ -18,9 +18,9 @@ public class Player implements Displayable {
   public void move() {
     x += speed * cos(heading);
     y += speed * sin(heading);
-    if(collide){
-    x += speed * cos(heading);
-    y += speed * sin(heading);
+    if (collide) {
+      x += speed * cos(heading);
+      y += speed * sin(heading);
     }
     time ++;
   }
@@ -39,7 +39,7 @@ public class Player implements Displayable {
     }
     if (lim + 1 > 0) {
       time =0;
-      shot = true;
+      shot = 1;
       return true;
     }
     return false;
@@ -54,16 +54,16 @@ public class Player implements Displayable {
       (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
       (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
   }
-  
-  public void setCol(boolean b){
+
+  public void setCol(boolean b) {
     collide = b;
   }
-    
-    public float getX(){
+
+  public float getX() {
     return x;
   }
-  
-  public float getY(){
+
+  public float getY() {
     return y;
   }
 }

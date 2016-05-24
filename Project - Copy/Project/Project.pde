@@ -29,24 +29,21 @@ boolean aDown, dDown, menu, amServer, amClient;
 Server server;
 Client client;
 
-
 public void setup() {
   size(600, 400);
   menu = true;
-  amClient = true;
-  amServer = false;
+  amClient=true;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
   displayables.add(new Block(20, 380, 560, 20, 100));
   displayables.add(new Block(300, 200, 20, 20, 100));
-  for(int i = 0; i < displayables.size(); i ++){
-    blocks.add((Block)(displayables.get(i)));      
+  for (int i = 0; i < displayables.size(); i ++) {
+    blocks.add((Block)(displayables.get(i)));
   }
-  Warp w = new Warp(80,50, 13,150); 
+  Warp w = new Warp(80, 50, 13, 150); 
   displayables.add(w);
   warp.add(w);
-
 }
 
 public void keyPressed() {
@@ -58,47 +55,44 @@ public void keyPressed() {
   }
 }
 
-public void collision(){
-  for(int i = 0; i < moveables.size(); i ++){
-    for(int k = 0; k < blocks.size(); k ++){ 
-       if(moveables.get(i) instanceof Bullet){
-         Bullet temp = (Bullet) moveables.get(i);
-        if(blocks.get(k).amBox(temp.x, temp.y)){ 
+public void collision() {
+  for (int i = 0; i < moveables.size(); i ++) {
+    for (int k = 0; k < blocks.size(); k ++) { 
+      if (moveables.get(i) instanceof Bullet) {
+        Bullet temp = (Bullet) moveables.get(i);
+        if (blocks.get(k).amBox(temp.x, temp.y)) { 
           displayables.remove(temp);
           positionables.remove(temp);
           moveables.remove(temp);
           k = blocks.size();
           i --;
-        }  
-      }
-      else{
-      if(moveables.get(i) instanceof Player){
-        Player tmp = (Player) moveables.get(i);
-        if(blocks.get(k).amBox(tmp.x, tmp.y)){ // this has to be made to check for all tips of triangle 
-          tmp.setCol(true); // this nees to do something to hold back or turn triangle
         }
-        else{tmp.setCol(false);}
+      } else {
+        if (moveables.get(i) instanceof Player) {
+          Player tmp = (Player) moveables.get(i);
+          if (blocks.get(k).amBox(tmp.x, tmp.y)) { // this has to be made to check for all tips of triangle 
+            tmp.setCol(true); // this nees to do something to hold back or turn triangle
+          } else {
+            tmp.setCol(false);
+          }
+        }
       }
-      }
-
-
     }
   }
 }
 
-public void warped(){ // too be made accurate later
-  for(int i = 0; i < moveables.size(); i ++){
-    for(int k = 0; k < warp.size(); k ++){ 
-     if(moveables.get(i) instanceof Bullet){
-         Bullet temp = (Bullet) moveables.get(i);
-         if(warp.get(k).amWarp(temp.x, temp.y)){
-           if(temp.heading + 180 > 360){
-             temp.heading = 0 + (temp.heading + 180 - 360);
-           }
-           else{
-             temp.heading += 180;
-           }
-       }
+public void warped() { // too be made accurate later
+  for (int i = 0; i < moveables.size(); i ++) {
+    for (int k = 0; k < warp.size(); k ++) { 
+      if (moveables.get(i) instanceof Bullet) {
+        Bullet temp = (Bullet) moveables.get(i);
+        if (warp.get(k).amWarp(temp.x, temp.y)) {
+          if (temp.heading + 180 > 360) {
+            temp.heading = 0 + (temp.heading + 180 - 360);
+          } else {
+            temp.heading += 180;
+          }
+        }
       }
     }
   }
@@ -118,8 +112,12 @@ public void delete(float x, float y) {
 }
 
 public void send(Player p) {
-  client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot); //+ "," + playerCount);
-  p.shot = false;
+  if (amServer) { 
+    server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","); //+ "," + playerCount);
+  } else {
+    client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","); //+ "," + playerCount);
+  }
+  p.shot = 0;
   //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
 }
 
@@ -133,7 +131,7 @@ public String read() {
   return line;
 }
 
-public void parse(String s){
+public void parse(String s) {
   String designation = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
   String x = s.substring(0, s.indexOf(","));
@@ -141,35 +139,31 @@ public void parse(String s){
   String y = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
   String heading = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",") + 1);
-  String shot = s;
+  s = s.substring(s.indexOf(",")+1);
+  int shot = Integer.parseInt(s.substring(0, s.indexOf(",")));
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
   int des = Integer.parseInt(designation);
-  if(players.size() < des){
-     Player p = new Player(des);
-     p.x = xVal;
-     p.y= yVal;
-     p.heading = hea;
-     displayables.add(p);
-     positionables.add(p);
-     players.add(p);   
-   }
-   else{
-     players.get(des).x = xVal;
-     players.get(des).y = yVal;
-     players.get(des).heading = hea;
-   }
-   if(shot.equals("true")){
-     Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
-            displayables.add(b);
-            positionables.add(b);
-            moveables.add(b);
-   }
-     
- 
-     
+  if (players.size() < des) {
+    Player p = new Player(des);
+    p.x = xVal;
+    p.y= yVal;
+    p.heading = hea;
+    displayables.add(p);
+    positionables.add(p);
+    players.add(p);
+  } else {
+    players.get(des).x = xVal;
+    players.get(des).y = yVal;
+    players.get(des).heading = hea;
+  }
+  if (shot==1) {
+    Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
+    displayables.add(b);
+    positionables.add(b);
+    moveables.add(b);
+  }
 }
 
 
@@ -178,7 +172,6 @@ public void parse(String s){
 public void draw() {
   background(0);
   if (menu) { 
-    amServer = false;
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer) {
       myPlayer = 0;
@@ -189,7 +182,6 @@ public void draw() {
       client=new Client(this, "127.0.0.1", 6666);
       myPlayer=(int)random(10^10)+1;
       menu=false;
-      //playerCount ++;
     }
     if (!menu) {
       for (int i = 0; i < playerCount; i++) {
@@ -224,12 +216,13 @@ public void draw() {
           info=read();
           if (info != "") {
             server.write(info);
+            parse(info);
             //info is ALL client messages from ONE client that have not yet been read in string form; do string stuff here
           }
         } else {
           info = client.readString();
-          if(info != null){
-          parse(info);
+          if (info != null) {
+            parse(info);
           }
           //info is string containing EVERY message the server has sent to this client and has not yet been cleared in string form; do string stuff here
         }
