@@ -2,7 +2,7 @@
 
 5/14/16 <br>
 
-Jackson:<br>
+Jackson and Matthew:<br>
 
 -Made Game and Ship Class<br>
 -Functions Now include booting game, creation of ship, and ability to move ship.<br>
@@ -10,7 +10,7 @@ Jackson:<br>
 
 5/14 - 5/18 <br>
 
-Jackson:<br>
+Jackson and Matthew:<br>
 - experimented with online server stuff<br>
 - studied for AP exams<br>
 
@@ -25,6 +25,10 @@ Jackson: <br>
 
 
 5/21/16 <br>
+
+Matthew:<br>
+-set up server to client and vice versa messaging
+-must specify total number of players before start
 
 Jackson: <br>
 
@@ -47,7 +51,10 @@ Jackson: <br>
 Jackson: <br>
 - got multiplayer working for up to 2 players<br>
 - got bullets working one way only<br>
-
+Matthew:<br>
+- bullets work both ways
+- works with theoretically as many as you want(only tried up to 4)
+- merged project and project-copy so only difference is boolean specifying if client or server
 
 <br>
 To Do:<br>
