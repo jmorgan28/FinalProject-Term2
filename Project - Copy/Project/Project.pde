@@ -130,21 +130,41 @@ public String read() {
   }
   return line;
 }
-
+private boolean nullCheck(String s){
+  if(s.indexOf(",")==-1){
+    return true;
+  }
+  return false;
+}
 public void parse(String s) {
+  if(nullCheck(s)){
+    return;
+  }
   String designation = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
+  if(nullCheck(s)){
+    return;
+  }
   String x = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
+  if(nullCheck(s)){
+    return;
+  }
   String y = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",") + 1);
+  if(nullCheck(s)){
+    return;
+  }
   String heading = s.substring(0, s.indexOf(","));
   s = s.substring(s.indexOf(",")+1);
-  int shot = Integer.parseInt(s.substring(0, s.indexOf(",")));
+  if(nullCheck(s)){
+    return;
+  }
+  int shot = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
-  int des = Integer.parseInt(designation);
+  int des =(int) Float.parseFloat(designation);
   if (players.size() < des) {
     Player p = new Player(des);
     p.x = xVal;
