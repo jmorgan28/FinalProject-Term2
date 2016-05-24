@@ -29,7 +29,7 @@ Jackson: <br>
 Matthew:<br>
 -set up server to client and vice versa messaging
 -must specify total number of players before start
-
+<br>
 Jackson: <br>
 
 - made blocks and bullets detect when they collide. Made this destroy bullets<br>
@@ -51,6 +51,7 @@ Jackson: <br>
 Jackson: <br>
 - got multiplayer working for up to 2 players<br>
 - got bullets working one way only<br>
+<br>
 Matthew:<br>
 - bullets work both ways
 - works with theoretically as many as you want(only tried up to 4)
