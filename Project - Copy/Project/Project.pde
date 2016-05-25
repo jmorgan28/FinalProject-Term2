@@ -19,11 +19,11 @@ ArrayList<Positionable> positionables = new ArrayList<Positionable>();
 ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Block> blocks = new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
-PFont c, s;
+PFont c, s, n;
 
 
 
-int playerCount=0;
+int playerCount=2;
 int myPlayer=0;
 
 boolean aDown, dDown, menu, amServer, amClient;
@@ -35,6 +35,7 @@ public void setup() {
   size(600, 400);
   c = createFont("Arial", 16, true);
   s = createFont("Arial", 16, true);
+  n = createFont("Arial", 16, true);
   menu = true;
   amServer=false;
   amClient = false;
@@ -70,12 +71,36 @@ public void makeMenu(){
  text("Join as Client", 0, 300);
  if(mousePressed){
    if(mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100){
-     amServer = true;
-     playerCount ++;
+     //int i = 0;
+     //while(i < 1){
+     background(255,0,0); 
+     textFont(n, 36);
+     fill(255);
+     text("Input Player Number 1 -4", 0, 150);
+     //}
+     if(keyPressed){
+           if (key=='1') {
+             playerCount =1;
+             amServer = true;
+     }
+            if (key=='2') {
+             playerCount =2;
+             amServer = true;
+     }
+             if (key=='3') {
+             playerCount =3;
+             amServer = true;
+     }
+            if (key=='4') {
+             playerCount =4;
+             amServer = true;
+     }
+     }
+     //amServer = true;
+     //playerCount ++;
    }
    else{if(mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250){
      amClient = true;
-     playerCount ++;
    }
    }
      
@@ -212,20 +237,22 @@ public void parse(String s) {
     return;
   }
   int play = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
+  System.out.println(play);
   int shot = (int)Float.parseFloat(sh);
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
   int des =(int) Float.parseFloat(designation);
+  playerCount = play;
   if (players.size() < des) {
     Player p = new Player(des);
     p.x = xVal;
     p.y= yVal;
     p.heading = hea;
-    //playerCount = play;
+    playerCount = play;
     displayables.add(p);
     positionables.add(p);
-    players.add(p);
+   players.add(p);
   } else {
     players.get(des).x = xVal;
     players.get(des).y = yVal;
