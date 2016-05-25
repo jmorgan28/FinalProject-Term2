@@ -37,8 +37,6 @@ public void setup() {
   s = createFont("Arial", 16, true);
   n = createFont("Arial", 16, true);
   menu = true;
-  amServer=false;
-  amClient = false;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -61,53 +59,66 @@ public void keyPressed() {
   }
 }
 
-public void makeMenu(){
- background(255,0,0); 
- textFont(c, 36);
- fill(255);
- text("Join as Server", 0, 150);
- textFont(s, 36);
- fill(255);
- text("Join as Client", 0, 300);
- if(mousePressed){
-   if(mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100){
-     //int i = 0;
-     //while(i < 1){
-     background(255,0,0); 
-     textFont(n, 36);
-     fill(255);
-     text("Input Player Number 1 -4", 0, 150);
-     //}
-     if(keyPressed){
-           if (key=='1') {
-             playerCount =1;
-             amServer = true;
-     }
-            if (key=='2') {
-             playerCount =2;
-             amServer = true;
-     }
-             if (key=='3') {
-             playerCount =3;
-             amServer = true;
-     }
-            if (key=='4') {
-             playerCount =4;
-             amServer = true;
-     }
-     }
-     //amServer = true;
-     //playerCount ++;
-   }
-   else{if(mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250){
-     amClient = true;
-   }
-   }
-     
- }
-   
+public void makeMenu() {
+  background(255, 0, 0); 
+  textFont(c, 36);
+  fill(255);
+  text("Join as Server", 0, 150);
+  textFont(s, 36);
+  fill(255);
+  text("Join as Client", 0, 300);
+  if (mousePressed) {
+    if (mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100) {
+      background(255, 0, 0); 
+      textFont(n, 36);
+      fill(255);
+      text("Input Player Number 1 -4", 0, 150);
 
-  
+      if (keyPressed) {
+        if (key=='1') {
+          playerCount =1;
+          amServer = true;
+        }
+        if (key=='2') {
+          playerCount =2;
+          amServer = true;
+        }
+        if (key=='3') {
+          playerCount =3;
+          amServer = true;
+        }
+        if (key=='4') {
+          playerCount =4;
+          amServer = true;
+        }
+      }
+    } 
+    if (mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250) {
+      background(255, 0, 0); 
+      textFont(n, 36);
+      fill(255);
+      text("Input Player Number 1 -4", 0, 150);
+
+      if (keyPressed) {
+        if (key=='1') {
+          playerCount =1;
+          amClient = true;
+        }
+        if (key=='2') {
+          playerCount =2;
+          amClient = true;
+        }
+        if (key=='3') {
+          playerCount =3;
+          amClient = true;
+        }
+        if (key=='4') {
+          playerCount =4;
+          amClient = true;
+        }
+      }
+    }
+  }
 }
 
 public void collision() {
@@ -169,9 +180,9 @@ public void delete(float x, float y) {
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","  + playerCount + "," );
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+","  + playerCount + "," );
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
     }
     p.shot = 0;
   }
@@ -236,22 +247,22 @@ public void parse(String s) {
   if (nullCheck(s)) {
     return;
   }
-  int play = (int)Float.parseFloat(s.substring(0, s.indexOf(",")));
+
   int shot = (int)Float.parseFloat(sh);
   float xVal = Float.parseFloat(x);
   float yVal = Float.parseFloat(y);
   float hea = Float.parseFloat(heading);
   int des =(int) Float.parseFloat(designation);
-  playerCount = play;
-  if (players.size() < des) {
+\
+  if (players.size() < des+1) {
     Player p = new Player(des);
     p.x = xVal;
     p.y= yVal;
     p.heading = hea;
-    playerCount = play;
+\
     displayables.add(p);
     positionables.add(p);
-   players.add(p);
+    players.add(p);
   } else {
     players.get(des).x = xVal;
     players.get(des).y = yVal;
@@ -307,7 +318,7 @@ public void draw() {
     }
     if (amClient) {
       client=new Client(this, "127.0.0.1", 6666);
-      myPlayer=(int)random(10^10)+1;
+      myPlayer=playerCount-1;
       menu=false;
     }
     if (!menu) {
