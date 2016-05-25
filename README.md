@@ -57,6 +57,14 @@ Matthew:<br>
 - works with theoretically as many as you want(only tried up to 4)<br>
 - merged project and project-copy so only difference is boolean specifying if client or server<br>
 
+
+
+5/24/16 <br>
+
+Jackson: <br>
+- made menu where you can select to be a player or client<br>
+- if server is picked must pick player amount (not finished no have to hold mouse and then press number for it to work. Does not send player count accurately to client)<br>
+
 <br>
 To Do:<br>
 online<br>
