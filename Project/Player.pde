@@ -19,11 +19,34 @@ public class Player implements Displayable {
     x += speed * cos(heading);
     y += speed * sin(heading);
     if (collide) {
-      x += speed * cos(heading);
-      y += speed * sin(heading);
+      //x += speed * cos(heading);
+      //y += speed * sin(heading);
+      x = 100;
+      y = 100;
     }
     time ++;
   }
+  
+  public void canMove(float x, float y){
+     float p1x = (float)(x + (20 * Math.cos(heading)));
+     float p1y = (float)(y + (20 * Math.sin(heading)));
+     float p2x = (float)(x + (15 * Math.cos(heading - 90)));
+     float p2y = (float)(y + (15 * Math.sin(heading - 90)));
+     float p3x = (float)(x + (15 * Math.cos(heading + 90)));
+     float p3y = (float)(y + (15 * Math.sin(heading + 90)));
+    
+     
+  }
+  
+  public float[] ellip(int degrees){
+    float[] coord = new float[2];
+    float xx = x + 15 * cos(degrees);
+    float yy = y + 20 * sin(degrees);
+    coord[0] = xx;
+    coord[1] = yy;
+    return coord;
+  }
+    
 
   public boolean state() {
     return state;
@@ -50,6 +73,8 @@ public class Player implements Displayable {
 
   public void display() {
     fill(255);
+    ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
+    //ellipse(x,y,30,40);
     triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
       (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
       (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));

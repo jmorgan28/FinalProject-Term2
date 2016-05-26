@@ -45,7 +45,7 @@ public void setup() {
   for (int i = 0; i < displayables.size(); i ++) {
     blocks.add((Block)(displayables.get(i)));
   }
-  Warp w = new Warp(80, 50, 13, 150); 
+  Warp w = new Warp(80, 50, 20, 150); 
   displayables.add(w);
   warp.add(w);
 }
@@ -131,13 +131,47 @@ public void collision() {
           positionables.remove(temp);
           moveables.remove(temp);
           k = blocks.size();
+          //System.out.println("bull");
           i --;
         }
       } else {
+        System.out.println("player");
         if (moveables.get(i) instanceof Player) {
           Player tmp = (Player) moveables.get(i);
-          if (blocks.get(k).amBox(tmp.x, tmp.y)) { // this has to be made to check for all tips of triangle 
+          for (int d = 0; d < 360; d ++) {
+            System.out.println(tmp.ellip(d)[0]);
+            System.out.println(tmp.ellip(d)[1]);
+
+            if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
+              tmp.setCol(true); // this nees to do something to hold back or turn triangle
+              System.out.println("true");
+              d = 361;
+              k = blocks.size();
+            } else {
+              tmp.setCol(false);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+public void playCollide() {
+  for (int i = 0; i < players.size(); i ++) {
+    for (int k = 0; k < blocks.size(); k ++) {
+      if (players.get(i) instanceof Player) {
+        Player tmp = (Player) players.get(i);
+        for (int d = 0; d < 360; d ++) {
+          //System.out.println(tmp.ellip(d)[0]);
+          //System.out.println(tmp.ellip(d)[1]);
+
+          if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
             tmp.setCol(true); // this nees to do something to hold back or turn triangle
+            //System.out.println("true");
+            d = 361;
+            k = blocks.size();
           } else {
             tmp.setCol(false);
           }
@@ -147,221 +181,223 @@ public void collision() {
   }
 }
 
-public void warped() { // too be made accurate later
-  for (int i = 0; i < moveables.size(); i ++) {
-    for (int k = 0; k < warp.size(); k ++) { 
-      if (moveables.get(i) instanceof Bullet) {
-        Bullet temp = (Bullet) moveables.get(i);
-        if (warp.get(k).amWarp(temp.x, temp.y)) {
-          if (temp.heading + 180 > 360) {
-            temp.heading = 0 + (temp.heading + 180 - 360);
-          } else {
-            temp.heading += 180;
+    public void warped() { // too be made accurate later
+      for (int i = 0; i < moveables.size(); i ++) {
+        for (int k = 0; k < warp.size(); k ++) { 
+          if (moveables.get(i) instanceof Bullet) {
+            Bullet temp = (Bullet) moveables.get(i);
+            if (warp.get(k).amWarp(temp.x, temp.y)) {
+              if (temp.heading + 180 > 360) {
+                temp.heading = 0 + (temp.heading + 180 - 360);
+              } else {
+                temp.heading += 180;
+              }
+            }
           }
         }
       }
     }
-  }
-}
 
 
-public void keyReleased() {
-  if (key=='a') {
-    aDown=false;
-  }
-  if (key=='d') { 
-    dDown=false;
-  }
-}
-
-public void delete(float x, float y) {
-}
-
-public void send(Player p) {
-  try {
-    if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
-    } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
-    }
-    p.shot = 0;
-  }
-  catch(Exception e) {
-    send(p);
-  }
-  //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
-}
-
-public void read() {
-  try {
-    String line="";
-    if (amServer) {
-      Client player=server.available();
-      if (player !=null) {
-        line = player.readString();
+    public void keyReleased() {
+      if (key=='a') {
+        aDown=false;
       }
-      if (!line.equals("")) {
-        server.write(line);
+      if (key=='d') { 
+        dDown=false;
       }
-    } else {
-      line = client.readString();
     }
-    parse(line);
-  }
-  catch(Exception e) {
-    read();
-  }
-}
-private boolean nullCheck(String s) {
-  if (s.indexOf(",")==-1) {
-    return true;
-  }
-  return false;
-}
-public void parse(String s) {
-  if (nullCheck(s)) {
-    return;
-  }
-  String designation = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {
-    return;
-  }
-  String x = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {
-    return;
-  }
-  String y = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {
-    return;
-  }
-  String heading = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",")+1);
-  if (nullCheck(s)) {
-    return;
-  }
-  String sh = s.substring(0, s.indexOf(","));
-  s = s.substring(s.indexOf(",")+1);
-  if (nullCheck(s)) {
-    return;
-  }
 
-  int shot = (int)Float.parseFloat(sh);
-  float xVal = Float.parseFloat(x);
-  float yVal = Float.parseFloat(y);
-  float hea = Float.parseFloat(heading);
-  int des =(int) Float.parseFloat(designation);
-\
-  if (players.size() < des+1) {
-    Player p = new Player(des);
-    p.x = xVal;
-    p.y= yVal;
-    p.heading = hea;
-\
-    displayables.add(p);
-    positionables.add(p);
-    players.add(p);
-  } else {
-    players.get(des).x = xVal;
-    players.get(des).y = yVal;
-    players.get(des).heading = hea;
-  }
-  if (shot==1) {
-    Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
-    displayables.add(b);
-    positionables.add(b);
-    moveables.add(b);
-  }
-}
+    public void delete(float x, float y) {
+    }
 
-public void playerMovement() {
-  try {
-    for (Player p : players) {
-      if (p.designation==myPlayer) {
-        p.move();
-        if (dDown) {
-          p.heading+=.05;
+    public void send(Player p) {
+      try {
+        if (amServer) { 
+          server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
+        } else {
+          client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
         }
-        if (aDown) {
-          if (p.time > 15 && p.canShoot() ) {
-            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-            displayables.add(b);
-            positionables.add(b);
-            moveables.add(b);
-          }
-        }
-        collision();
-        warped();
+        p.shot = 0;
+      }
+      catch(Exception e) {
         send(p);
-      } else {
+      }
+      //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
+    }
+
+    public void read() {
+      try {
+        String line="";
+        if (amServer) {
+          Client player=server.available();
+          if (player !=null) {
+            line = player.readString();
+          }
+          if (!line.equals("")) {
+            server.write(line);
+          }
+        } else {
+          line = client.readString();
+        }
+        parse(line);
+      }
+      catch(Exception e) {
         read();
       }
     }
-  }
-  catch(Exception e) {
-    playerMovement();
-  }
-}
-
-
-public void draw() {
-  background(0);
-  if (menu) { 
-    makeMenu();
-    // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
-    if (amServer) {
-      myPlayer = 0;
-      server=new Server(this, 6666, "127.0.0.1" ); 
-      menu=false;
+    private boolean nullCheck(String s) {
+      if (s.indexOf(",")==-1) {
+        return true;
+      }
+      return false;
     }
-    if (amClient) {
-      client=new Client(this, "127.0.0.1", 6666);
-      myPlayer=playerCount-1;
-      menu=false;
-    }
-    if (!menu) {
-      for (int i = 0; i < playerCount; i++) {
-        Player p = new Player(i);
+    public void parse(String s) {
+      if (nullCheck(s)) {
+        return;
+      }
+      String designation = s.substring(0, s.indexOf(","));
+      s = s.substring(s.indexOf(",") + 1);
+      if (nullCheck(s)) {
+        return;
+      }
+      String x = s.substring(0, s.indexOf(","));
+      s = s.substring(s.indexOf(",") + 1);
+      if (nullCheck(s)) {
+        return;
+      }
+      String y = s.substring(0, s.indexOf(","));
+      s = s.substring(s.indexOf(",") + 1);
+      if (nullCheck(s)) {
+        return;
+      }
+      String heading = s.substring(0, s.indexOf(","));
+      s = s.substring(s.indexOf(",")+1);
+      if (nullCheck(s)) {
+        return;
+      }
+      String sh = s.substring(0, s.indexOf(","));
+      s = s.substring(s.indexOf(",")+1);
+      if (nullCheck(s)) {
+        return;
+      }
+
+      int shot = (int)Float.parseFloat(sh);
+      float xVal = Float.parseFloat(x);
+      float yVal = Float.parseFloat(y);
+      float hea = Float.parseFloat(heading);
+      int des =(int) Float.parseFloat(designation);
+
+      if (players.size() < des+1) {
+        Player p = new Player(des);
+        p.x = xVal;
+        p.y= yVal;
+        p.heading = hea;
+
         displayables.add(p);
         positionables.add(p);
+        //moveables.add(p);
         players.add(p);
+      } else {
+        players.get(des).x = xVal;
+        players.get(des).y = yVal;
+        players.get(des).heading = hea;
       }
-    }
-  } else {
-
-    playerMovement();
-
-    if (myPlayer!=0) {
-      client.clear();
-    }
-
-    for ( Moveable m : moveables) {
-      m.move();
-      m.collide(positionables);
-    }
-
-    for ( Displayable d : displayables) {
-      d.display();
-    }
-
-    for (int i = moveables.size() - 1; i >= 0; i--) {
-      if (!moveables.get(i).state()) {
-        moveables.remove(i);
+      if (shot==1) {
+        Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
+        displayables.add(b);
+        positionables.add(b);
+        moveables.add(b);
       }
     }
 
-    for (int i = displayables.size() - 1; i >= 0; i--) {
-      if (!displayables.get(i).state()) {
-        displayables.remove(i);
+    public void playerMovement() {
+      try {
+        for (Player p : players) {
+          if (p.designation==myPlayer) {
+            p.move();
+            if (dDown) {
+              p.heading+=.05;
+            }
+            if (aDown) {
+              if (p.time > 15 && p.canShoot() ) {
+                Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+                displayables.add(b);
+                positionables.add(b);
+                moveables.add(b);
+              }
+            }
+            collision();
+            playCollide();
+            warped();
+            send(p);
+          } else {
+            read();
+          }
+        }
+      }
+      catch(Exception e) {
+        playerMovement();
       }
     }
 
-    for (int i = positionables.size() - 1; i >= 0; i--) {
-      if (!positionables.get(i).state()) {
-        positionables.remove(i);
+
+    public void draw() {
+      background(0);
+      if (menu) { 
+        makeMenu();
+        // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
+        if (amServer) {
+          myPlayer = 0;
+          server=new Server(this, 6666, "127.0.0.1" ); 
+          menu=false;
+        }
+        if (amClient) {
+          client=new Client(this, "127.0.0.1", 6666);
+          myPlayer=playerCount-1;
+          menu=false;
+        }
+        if (!menu) {
+          for (int i = 0; i < playerCount; i++) {
+            Player p = new Player(i);
+            displayables.add(p);
+            positionables.add(p);
+            players.add(p);
+          }
+        }
+      } else {
+
+        playerMovement();
+
+        if (myPlayer!=0) {
+          client.clear();
+        }
+
+        for ( Moveable m : moveables) {
+          m.move();
+          m.collide(positionables);
+        }
+
+        for ( Displayable d : displayables) {
+          d.display();
+        }
+
+        for (int i = moveables.size() - 1; i >= 0; i--) {
+          if (!moveables.get(i).state()) {
+            moveables.remove(i);
+          }
+        }
+
+        for (int i = displayables.size() - 1; i >= 0; i--) {
+          if (!displayables.get(i).state()) {
+            displayables.remove(i);
+          }
+        }
+
+        for (int i = positionables.size() - 1; i >= 0; i--) {
+          if (!positionables.get(i).state()) {
+            positionables.remove(i);
+          }
+        }
       }
     }
-  }
-}
