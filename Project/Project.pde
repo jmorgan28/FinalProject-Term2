@@ -28,7 +28,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started;
+boolean aDown, dDown, menu, amServer, amClient, started,mouseClient,mouseServer;
 
 Server server;
 Client client;
@@ -40,6 +40,8 @@ public void setup() {
   n = createFont("Arial", 16, true);
   menu = true;
   started=false;
+  mouseServer=false;
+  mouseClient=false;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -71,8 +73,9 @@ public void makeMenu() {
   textFont(s, 36);
   fill(255);
   text("Join as Client", 0, 300);
-  if (mousePressed) {
-    if (mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100) {
+  if (mousePressed||mouseClient||mouseServer) {
+    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100)||mouseServer) {
+      mouseServer=true;
       background(255, 0, 0); 
       textFont(n, 36);
       fill(255);
@@ -97,7 +100,8 @@ public void makeMenu() {
         }
       }
     } 
-    if (mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250) {
+    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250)||mouseClient) {
+      mouseClient=true;
       background(255, 0, 0); 
       textFont(n, 36);
       fill(255);
@@ -370,29 +374,35 @@ void clientEvent(Client someClient) {
       clientCount+=1;
       client.clear();
     }
-    if (menu==false&&started) {
-      read();
-      client.clear();
-    }
+    /*if (menu==false&&started) {
+     read();
+     client.clear();
+     }*/
   }
 }
 public void draw() {
   background(0);
   if (menu||clientCount<playerCount-1) { 
     makeMenu();
-    // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
     if (amServer&&server==null) {
       myPlayer = 0;
       server=new Server(this, 6666, "127.0.0.1" ); 
       menu=false;
     }
     if (amClient&&client==null) {
-      client=new Client(this, "127.0.0.1", 6666);
-      String s=client.readString();
-      myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
-      clientCount=myPlayer;
-      menu=false;
-      client.clear();
+      try {
+        client=new Client(this, "127.0.0.1", 6666);
+        String s=client.readString();
+        myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
+        clientCount=myPlayer;
+        menu=false;
+        client.clear();
+        clientCount=myPlayer;
+        menu=false;
+        client.clear();
+      }
+      catch(Exception e) {
+      }
     }
   } else {
     if (!menu&& clientCount==playerCount-1&&!started) {
