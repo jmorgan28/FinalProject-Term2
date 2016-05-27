@@ -65,6 +65,20 @@ Jackson: <br>
 - made menu where you can select to be a player or client<br>
 - if server is picked must pick player amount (not finished no have to hold mouse and then press number for it to work. Does not send player count accurately to client)<br>
 
+5/25/16 <br>
+
+Jackson: <br>
+- made game detect if you collided with the wall. resets position if you did.<br>
+
+5/26/16 <br>
+
+Jackson: <br>
+- made lazer pickup class<br>
+- made ability to shoot lazer and lazer class pickup<br>
+- made it so when collide with wall can still move (not reset to place) so that you can turn and get away from wall<br>
+
+
+
 <br>
 To Do:<br>
 online<br>
