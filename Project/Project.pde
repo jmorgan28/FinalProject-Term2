@@ -26,8 +26,9 @@ PFont c, s, n;
 int playerCount=0;
 int myPlayer=0;
 int lazerTime = 0;
+int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient;
+boolean aDown, dDown, menu, amServer, amClient, started;
 
 Server server;
 Client client;
@@ -38,6 +39,7 @@ public void setup() {
   s = createFont("Arial", 16, true);
   n = createFont("Arial", 16, true);
   menu = true;
+  started=false;
   displayables.add(new Block(0, 0, 20, 400, 100));
   displayables.add(new Block(580, 0, 20, 400, 100));
   displayables.add(new Block(20, 0, 560, 20, 100));
@@ -240,7 +242,7 @@ public void send(Player p) {
   catch(Exception e) {
     send(p);
   }
-  //we need some sort of int like didShoot and gotShot in player to send along with this stuffddddddddd
+  //we need some sort of int like didShoot and gotShot in player to send along with this stuff
 }
 
 public void read() {
@@ -249,16 +251,17 @@ public void read() {
     if (amServer) {
       Client player=server.available();
       if (player !=null) {
-        line = player.readString();
+        line += player.readString();
       }
       if (!line.equals("")) {
         server.write(line);
       }
     } else {
-      line = client.readString();
+      line += client.readString();
     }
-
-    parse(line);
+    if (!line.equals("")) {
+      parse(line);
+    }
   }
   catch(Exception e) {
     read();
@@ -357,33 +360,50 @@ public void playerMovement() {
     playerMovement();
   }
 }
-
-
+void serverEvent(Server someServer, Client someClient) {
+  clientCount+=1;
+  server.write("Client:"+clientCount);
+}
+void clientEvent(Client someClient) {
+  if (myPlayer!=0) {
+    if (client.readString().indexOf(":")!=-1) {
+      clientCount+=1;
+      client.clear();
+    }
+    if (menu==false&&started) {
+      read();
+      client.clear();
+    }
+  }
+}
 public void draw() {
   background(0);
-  if (menu) { 
+  if (menu||clientCount<playerCount-1) { 
     makeMenu();
     // menu needs buttons that have you select if starting game(server) or joining(client) and something to specify the number of players that will be/are in the game
-    if (amServer) {
+    if (amServer&&server==null) {
       myPlayer = 0;
       server=new Server(this, 6666, "127.0.0.1" ); 
       menu=false;
     }
-    if (amClient) {
+    if (amClient&&client==null) {
       client=new Client(this, "127.0.0.1", 6666);
-      myPlayer=playerCount-1;
+      String s=client.readString();
+      myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
+      clientCount=myPlayer;
       menu=false;
+      client.clear();
     }
-    if (!menu) {
+  } else {
+    if (!menu&& clientCount==playerCount-1&&!started) {
       for (int i = 0; i < playerCount; i++) {
         Player p = new Player(i);
         displayables.add(p);
         positionables.add(p);
         players.add(p);
       }
+      started=true;
     }
-  } else {
-
     playerMovement();
 
     if (myPlayer!=0) {
