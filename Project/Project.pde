@@ -25,6 +25,7 @@ PFont c, s, n;
 
 int playerCount=0;
 int myPlayer=0;
+int lazerTime = 0;
 
 boolean aDown, dDown, menu, amServer, amClient;
 
@@ -45,6 +46,7 @@ public void setup() {
   for (int i = 0; i < displayables.size(); i ++) {
     blocks.add((Block)(displayables.get(i)));
   }
+  displayables.add(new LazerDrop(150, 250));
   Warp w = new Warp(80, 50, 20, 150); 
   displayables.add(w);
   warp.add(w);
@@ -176,6 +178,21 @@ public void playCollide() {
             tmp.setCol(false);
           }
         }
+      }
+    }
+    for (int f = 0; f < displayables.size(); f ++) {
+      if (displayables.get(f) instanceof LazerDrop) {
+        if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y)) {
+          players.get(i).hasLazer = true;
+          displayables.remove(f);
+          f --;
+        }
+      }
+      if (displayables.get(f) instanceof Lazer && lazerTime > 9) {
+        displayables.remove(f);
+        f --;
+        players.get(i).hasLazer = false;
+        lazerTime = 0;
       }
     }
   }
@@ -311,11 +328,20 @@ public void playerMovement() {
           p.heading+=.05;
         }
         if (aDown) {
-          if (p.time > 15 && p.canShoot() ) {
-            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-            displayables.add(b);
-            positionables.add(b);
-            moveables.add(b);
+          if (p.hasLazer) {
+            if (lazerTime == 0) {
+              Lazer temp = new Lazer(p.x, p.y, p.heading);
+              displayables.add(temp);
+            }
+
+            lazerTime ++;
+          } else {
+            if (p.time > 15 && p.canShoot() ) {
+              Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+              displayables.add(b);
+              positionables.add(b);
+              moveables.add(b);
+            }
           }
         }
         collision();
