@@ -217,7 +217,7 @@ public void eliminate() {
           }
           for (int f = 0; f < displayables.size(); f ++) {
             if (displayables.get(f) instanceof LazerDrop) {
-              if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y)) {
+              if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y) && players.get(i).hp != 1) {
                 players.get(i).hasLazer = true;
                 displayables.remove(f);
                 f --;
