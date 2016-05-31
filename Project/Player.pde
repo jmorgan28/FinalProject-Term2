@@ -16,12 +16,12 @@ public class Player implements Displayable {
     collide = false;
     hasLazer = false;
   }
-
+ //// merge merge merge
   public void move() {
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
       y += (speed * .4) * sin(heading);
-      if (collide) {
+      if (collide) { 
         x -= ((speed *.4)+4) * cos(heading);
         y -= ((speed *.4) + 4) * sin(heading);
         //x = 100;
