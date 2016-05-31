@@ -2,7 +2,7 @@ public class Lazer implements Displayable {
   //public boolean isDrop, isHeld;
   public float x, y, heading;
   boolean state;
-  
+
 
 
 
@@ -14,13 +14,13 @@ public class Lazer implements Displayable {
     //isHeld = true;
     state = true;
   }
-  
+
   public boolean state() {
     return state;
   }
-  
- // public boolean amLazer(float a, float b) {
-   // return 
+
+  // public boolean amLazer(float a, float b) {
+  // return 
   //}
 
 

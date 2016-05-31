@@ -11,11 +11,11 @@ public class LazerDrop implements Displayable {
     //isHeld = true;
     state = true;
   }
-  
+
   public boolean state() {
     return state;
   }
-  
+
   public boolean amLazer(float a, float b) {
     return  a >= x && a <= x + 15 && b >= y && b <= y + 15;
   }
