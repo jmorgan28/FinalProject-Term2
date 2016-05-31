@@ -313,7 +313,7 @@ public void parse(String s) {
   String designation = s.substring(0, s.indexOf(","));
   int des =(int) Float.parseFloat(designation);
   s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {         
+  if (nullCheck(s)||des==myPlayer) {         
     return;
   }
   String x = s.substring(0, s.indexOf(","));
