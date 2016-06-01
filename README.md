@@ -92,6 +92,16 @@ Jackson: <br>
 -adjusted display for this mode<br>
 -adjusted movement for this mode<br>
 
+6/1/16 <br>
+
+Jackson: <br>
+-now don't bounce back when collide with wall. Glide against it<br>
+-balance changes<br>
+-made time for pilot mode so eventually return to ship mode if not shot<br>
+-made collission detection for lazer (not sure if works. for some reason lazer is acting infinitely in multiplayer)<br>
+-broke collision in corners<br>
+-broke collission for stray blocks(now act as speed boost)<br>
+
 <br>
 To Do:<br>
 online<br>
