@@ -178,9 +178,21 @@ public void beenShot() {
           k --;
         }
       }
+      if (displayables.get(i) instanceof Lazer && players.get(i) instanceof Player) {
+        Lazer temp = (Lazer) displayables.get(k);
+        Player tempo = players.get(i);
+        double len = Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
+        for (double w = 0; w <= len; w++) {
+          if (tempo.inTriangle((temp.xx1 + (i * cos(temp.heading))), (temp.yy1 + (i * sin(temp.heading))))) {
+            tempo.hp --;
+            w = len + 1;
+          }
+        }
+      }
     }
   }
 }
+
 
 public void eliminate() {
   for (int i = 0; i < players.size(); i ++) {

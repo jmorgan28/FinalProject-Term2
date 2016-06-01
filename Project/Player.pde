@@ -1,7 +1,7 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
   boolean state, collide, hasLazer;
-  int designation, shot, hp, ifg;
+  int designation, shot, hp, ifg, hptime;
   public Player(int number) {
     x=100;
     y=100;
@@ -12,6 +12,7 @@ public class Player implements Displayable {
     size=20;
     lim = 3;
     time = 0;
+    hptime = 0;
     hp = 2;
     collide = false;
     hasLazer = false;
@@ -57,8 +58,15 @@ public class Player implements Displayable {
   */
   
  public boolean move() {
-    System.out.println(sin(heading));
+    //System.out.println(sin(heading));
     time ++;
+    if(hp == 1){
+      hptime ++;
+    }
+    if(hptime >= 550){
+      hptime = 0;
+      hp = 2;
+    }
     ifg = 0;
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
@@ -121,7 +129,7 @@ public class Player implements Displayable {
   public boolean canShoot() {
     if (hp != 1) { // need to fix lazer
       lim --;
-      if (lim < -75) {
+      if (lim < -30) {
         lim = 2;
       }
       if (lim + 1 <= 0) {

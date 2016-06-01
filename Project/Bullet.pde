@@ -5,7 +5,7 @@ public class Bullet implements Moveable, Displayable {
     x = pX;
     y = pY;
     heading = direction;
-    speed = 2;
+    speed = 2; //2
     size=3;
     state=true;
   }
