@@ -17,7 +17,7 @@ public class Player implements Displayable {
     hasLazer = false;
   }
   //// merge merge merge
-  public boolean move() {
+  /*public boolean move() {
     System.out.println(heading);
     time ++;
     ifg = 0;
@@ -54,10 +54,10 @@ public class Player implements Displayable {
     }
     return true;
   }
+  */
   
-  
- /* public boolean move() {
-    System.out.println(heading);
+ public boolean move() {
+    System.out.println(sin(heading));
     time ++;
     ifg = 0;
     if (hp == 1) {
@@ -73,18 +73,18 @@ public class Player implements Displayable {
       x += speed * cos(heading);
       y+= speed * sin(heading);
       if (collide) {
-        if ((x >= 20 && x <= 580 && y <= 37 && ((int)heading % 6 == 0 && (int)heading % 3 ==0) && (int)heading % 2 != 0) || (x >= 20 && x <= 580 && y >= 373 && (heading >= 180 && heading <= 360)) ) {
+        if ((x >= 20 && x <= 580 && y <= 37 && (sin(heading) <= 0 && cos(heading) >= -1)) || (x >= 20 && x <= 580 && y >= 373 && (sin(heading) >= 0 && cos(heading) <= 1)) ) {
           y -= speed * sin(heading);
           ifg =1;
           return true;
         }
-        if ((y >= 20 && y <=380 && x <=37) || (y >= 20 && y <=380 && x >=577)) {
+        if ((y >= 20 && y <=380 && x <=37 && (sin(heading) >= -1 && cos(heading) <= 0)) || (y >= 20 && y <=380 && x >=577 && (sin(heading) <= 1 && cos(heading) >= 0))) {
           x -= speed * cos(heading);
           ifg = 2;
           return true;
         } else {
-          x -= (speed +4) * cos(heading);
-          y -= (speed +4) * sin(heading);
+          x += (speed) * cos(heading);
+          y += (speed) * sin(heading);
           return true;
         }
         //x = 100;
@@ -92,7 +92,7 @@ public class Player implements Displayable {
       }
     }
     return true;
-  *///}
+  }
 
 
   public void canMove(float x, float y) {
@@ -150,7 +150,7 @@ public class Player implements Displayable {
       }
       fill(255);
       ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
-      ellipse(x, y, 16, 16);
+      //ellipse(x, y, 16, 16);
       triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
         (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
         (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
