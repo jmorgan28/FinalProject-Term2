@@ -1,7 +1,7 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
   boolean state, collide, hasLazer;
-  int designation, shot, hp;
+  int designation, shot, hp, ifg;
   public Player(int number) {
     x=100;
     y=100;
@@ -17,7 +17,10 @@ public class Player implements Displayable {
     hasLazer = false;
   }
   //// merge merge merge
-  public void move() {
+  public boolean move() {
+    System.out.println(heading);
+    time ++;
+    ifg = 0;
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
       y += (speed * .4) * sin(heading);
@@ -29,16 +32,68 @@ public class Player implements Displayable {
       }
     } else {
       x += speed * cos(heading);
-      y += speed * sin(heading);
+      y+= speed * sin(heading);
       if (collide) {
-        x -= (speed +4) * cos(heading);
-        y -= (speed + 4) * sin(heading);
+        if ((x >= 20 && x <= 580 && y <= 37 ) || (x >= 20 && x <= 580 && y >= 373) ) {
+          y -= speed * sin(heading);
+          ifg =1;
+          return true;
+        }
+        if ((y >= 20 && y <=380 && x <=37) || (y >= 20 && y <=380 && x >=577)) {
+          x -= speed * cos(heading);
+          ifg = 2;
+          return true;
+        } else {
+          x -= (speed +4) * cos(heading);
+          y -= (speed +4) * sin(heading);
+          return true;
+        }
         //x = 100;
         //y = 100;
       }
-      time ++;
     }
+    return true;
   }
+  
+  
+ /* public boolean move() {
+    System.out.println(heading);
+    time ++;
+    ifg = 0;
+    if (hp == 1) {
+      x += (speed * .4) * cos(heading);
+      y += (speed * .4) * sin(heading);
+      if (collide) { 
+        x -= ((speed *.4)+4) * cos(heading);
+        y -= ((speed *.4) + 4) * sin(heading);
+        //x = 100;
+        //y = 100;
+      }
+    } else {
+      x += speed * cos(heading);
+      y+= speed * sin(heading);
+      if (collide) {
+        if ((x >= 20 && x <= 580 && y <= 37 && ((int)heading % 6 == 0 && (int)heading % 3 ==0) && (int)heading % 2 != 0) || (x >= 20 && x <= 580 && y >= 373 && (heading >= 180 && heading <= 360)) ) {
+          y -= speed * sin(heading);
+          ifg =1;
+          return true;
+        }
+        if ((y >= 20 && y <=380 && x <=37) || (y >= 20 && y <=380 && x >=577)) {
+          x -= speed * cos(heading);
+          ifg = 2;
+          return true;
+        } else {
+          x -= (speed +4) * cos(heading);
+          y -= (speed +4) * sin(heading);
+          return true;
+        }
+        //x = 100;
+        //y = 100;
+      }
+    }
+    return true;
+  *///}
+
 
   public void canMove(float x, float y) {
     float p1x = (float)(x + (20 * Math.cos(heading)));
@@ -51,8 +106,8 @@ public class Player implements Displayable {
 
   public float[] ellip(int degrees) {
     float[] coord = new float[2];
-    float xx = x + 10 * cos(degrees);
-    float yy = y + 15 * sin(degrees);
+    float xx = x + 8 * cos(degrees);
+    float yy = y + 9 * sin(degrees);
     coord[0] = xx;
     coord[1] = yy;
     return coord;
@@ -95,7 +150,7 @@ public class Player implements Displayable {
       }
       fill(255);
       ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
-      //ellipse(x,y,20,30);
+      ellipse(x, y, 16, 16);
       triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
         (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
         (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
