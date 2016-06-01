@@ -16,7 +16,7 @@ public class Player implements Displayable {
     collide = false;
     hasLazer = false;
   }
- //// merge merge merge
+  //// merge merge merge
   public void move() {
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
@@ -86,7 +86,7 @@ public class Player implements Displayable {
   }
 
   public void display() {
-    if (hp == 1) {
+    if (hp <= 1) {
       fill(255);
       ellipse(x, y, 9, 9);
     } else {

@@ -195,287 +195,288 @@ public void eliminate() {
 
 
 
-      public void playCollide() {
-        for (int i = 0; i < players.size(); i ++) {
-          for (int k = 0; k < blocks.size(); k ++) {
-            if (players.get(i) instanceof Player) {
-              Player tmp = (Player) players.get(i);
-              for (int d = 0; d < 360; d ++) {
-                //System.out.println(tmp.ellip(d)[0]);
-                //System.out.println(tmp.ellip(d)[1]);
+public void playCollide() {
+  for (int i = 0; i < players.size(); i ++) {
+    for (int k = 0; k < blocks.size(); k ++) {
+      if (players.get(i) instanceof Player) {
+        Player tmp = (Player) players.get(i);
+        for (int d = 0; d < 360; d ++) {
+          //System.out.println(tmp.ellip(d)[0]);
+          //System.out.println(tmp.ellip(d)[1]);
 
-                if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
-                  tmp.setCol(true); // this nees to do something to hold back or turn triangle
-                  //System.out.println("true");
-                  d = 361;
-                  k = blocks.size();
-                } else {
-                  tmp.setCol(false);
-                }
-              }
-            }
-          }
-          for (int f = 0; f < displayables.size(); f ++) {
-            if (displayables.get(f) instanceof LazerDrop) {
-              if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y) && players.get(i).hp != 1) {
-                players.get(i).hasLazer = true;
-                displayables.remove(f);
-                f --;
-              }
-            }
-            if (displayables.get(f) instanceof Lazer && lazerTime > 9) {
-              displayables.remove(f);
-              f --;
-              players.get(i).hasLazer = false;
-              lazerTime = 0;
-            }
-          }
-        }
-      }
-
-      public void warped() { // too be made accurate later
-        for (int i = 0; i < moveables.size(); i ++) {
-          for (int k = 0; k < warp.size(); k ++) { 
-            if (moveables.get(i) instanceof Bullet) {
-              Bullet temp = (Bullet) moveables.get(i);
-              if (warp.get(k).amWarp(temp.x, temp.y)) {
-                if (temp.heading + 180 > 360) {
-                  temp.heading = 0 + (temp.heading + 180 - 360);
-                } else {
-                  temp.heading += 180;
-                }
-              }
-            }
-          }
-        }
-      }
-
-
-      public void keyReleased() {
-        if (key=='a') {
-          aDown=false;
-        }
-        if (key=='d') { 
-          dDown=false;
-        }
-      }
-
-      public void delete(float x, float y) {
-      }
-
-      public void send(Player p) {
-        try {
-          if (amServer) { 
-            server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
+          if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
+            tmp.setCol(true); // this nees to do something to hold back or turn triangle
+            //System.out.println("true");
+            d = 361;
+            k = blocks.size();
           } else {
-            client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
+            tmp.setCol(false);
           }
-          p.shot = 0;
         }
-        catch(Exception e) {
-          send(p);
-        }
-        //we need some sort of int like didShoot and gotShot in player to send along with this stuff
       }
+    }
+    for (int f = 0; f < displayables.size(); f ++) {
+      if (displayables.get(f) instanceof LazerDrop) {
+        if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y) && players.get(i).hp != 1) {
+          players.get(i).hasLazer = true;
+          displayables.remove(f);
+          f --;
+        }
+      }
+      if (displayables.get(f) instanceof Lazer && lazerTime > 9) {
+        displayables.remove(f);
+        f --;
+        players.get(i).hasLazer = false;
+        lazerTime = 0;
+      }
+    }
+  }
+}
 
-      public void read() {
-        try {
-          String line="";
-          if (amServer) {
-            Client player=server.available();
-            if (player !=null) {
-              line += player.readString();
-            }
-            if (!line.equals("")) {
-              server.write(line);
-            }
+public void warped() { // too be made accurate later
+  for (int i = 0; i < moveables.size(); i ++) {
+    for (int k = 0; k < warp.size(); k ++) { 
+      if (moveables.get(i) instanceof Bullet) {
+        Bullet temp = (Bullet) moveables.get(i);
+        if (warp.get(k).amWarp(temp.x, temp.y)) {
+          if (temp.heading + 180 > 360) {
+            temp.heading = 0 + (temp.heading + 180 - 360);
           } else {
-            line += client.readString();
-          }
-          if (!line.equals("")) {
-            parse(line);
-          }
-        }
-        catch(Exception e) {
-          read();
-        }
-      }
-      private boolean nullCheck(String s) {
-        if (s.indexOf(",")==-1) {
-          return true;
-        }
-        return false;
-      }
-      public void parse(String s) {
-        if (nullCheck(s)) {
-          return;
-        }
-        String designation = s.substring(0, s.indexOf(","));
-        s = s.substring(s.indexOf(",") + 1);
-        if (nullCheck(s)) {
-          return;
-        }
-        String x = s.substring(0, s.indexOf(","));
-        s = s.substring(s.indexOf(",") + 1);
-        if (nullCheck(s)) {
-          return;
-        }
-        String y = s.substring(0, s.indexOf(","));
-        s = s.substring(s.indexOf(",") + 1);
-        if (nullCheck(s)) {
-          return;
-        }
-        String heading = s.substring(0, s.indexOf(","));
-        s = s.substring(s.indexOf(",")+1);
-        if (nullCheck(s)) {
-          return;
-        }
-        String sh = s.substring(0, s.indexOf(","));
-        s = s.substring(s.indexOf(",")+1);
-        if (nullCheck(s)) {
-          return;
-        }
-
-        int shot = (int)Float.parseFloat(sh);
-        float xVal = Float.parseFloat(x);
-        float yVal = Float.parseFloat(y);
-        float hea = Float.parseFloat(heading);
-        int des =(int) Float.parseFloat(designation);
-
-
-        players.get(des).x = xVal;
-        players.get(des).y = yVal;
-        players.get(des).heading = hea;
-
-        if (shot==1) {
-          Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
-          displayables.add(b);
-          positionables.add(b);
-          moveables.add(b);
-        }
-      }
-
-      public void playerMovement() {
-        try {
-          for (Player p : players) {
-            if (p.designation==myPlayer) {
-              p.move();
-              if (dDown) {
-                p.heading+=.05;
-              }
-              if (aDown) {
-                if (p.hasLazer) {
-                  if (lazerTime == 0) {
-                    Lazer temp = new Lazer(p.x, p.y, p.heading);
-                    displayables.add(temp);
-                  }
-
-                  lazerTime ++;
-                } else {
-                  if (p.time > 15 && p.canShoot() ) {
-                    Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-                    displayables.add(b);
-                    positionables.add(b);
-                    moveables.add(b);
-                  }
-                }
-              }
-              eliminate();
-              collision();
-              beenShot();
-              playCollide();
-              warped();
-              send(p);
-            } else {
-              read();
-            }
-          }
-        }
-        catch(Exception e) {
-          playerMovement();
-        }
-      }
-      void serverEvent(Server someServer, Client someClient) {
-        clientCount+=1;
-        server.write("Client:"+clientCount);
-      }
-      void clientEvent(Client someClient) {
-        if (myPlayer!=0) {
-          if (client.readString().indexOf(":")!=-1) {
-            clientCount+=1;
-            client.clear();
-          }
-          /*if (menu==false&&started) {
-           read();
-           client.clear();
-           }*/
-        }
-      }
-      public void draw() {
-        background(0);
-        if (menu||clientCount<playerCount-1) { 
-          makeMenu();
-          if (amServer&&server==null) {
-            myPlayer = 0;
-            server=new Server(this, 6666, "127.0.0.1" ); 
-            menu=false;
-          }
-          if (amClient&&client==null) {
-            try {
-              client=new Client(this, "127.0.0.1", 6666);
-              String s=client.readString();
-              myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
-              clientCount=myPlayer;
-              menu=false;
-              client.clear();
-              clientCount=myPlayer;
-              menu=false;
-              client.clear();
-            }
-            catch(Exception e) {
-            }
-          }
-        } else {
-          if (!menu&& clientCount==playerCount-1&&!started) {
-            for (int i = 0; i < playerCount; i++) {
-              Player p = new Player(i);
-              displayables.add(p);
-              positionables.add(p);
-              players.add(p);
-            }
-            started=true;
-          }
-          playerMovement();
-
-          if (myPlayer!=0) {
-            client.clear();
-          }
-
-          for ( Moveable m : moveables) {
-            m.move();
-            m.collide(positionables);
-          }
-
-          for ( Displayable d : displayables) {
-            d.display();
-          }
-
-          for (int i = moveables.size() - 1; i >= 0; i--) {
-            if (!moveables.get(i).state()) {
-              moveables.remove(i);
-            }
-          }
-
-          for (int i = displayables.size() - 1; i >= 0; i--) {
-            if (!displayables.get(i).state()) {
-              displayables.remove(i);
-            }
-          }
-
-          for (int i = positionables.size() - 1; i >= 0; i--) {
-            if (!positionables.get(i).state()) {
-              positionables.remove(i);
-            }
+            temp.heading += 180;
           }
         }
       }
+    }
+  }
+}
+
+
+public void keyReleased() {
+  if (key=='a') {
+    aDown=false;
+  }
+  if (key=='d') { 
+    dDown=false;
+  }
+}
+
+public void delete(float x, float y) {
+}
+
+public void send(Player p) {
+  try {
+    if (amServer) { 
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
+    } else {
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," );
+    }
+    p.shot = 0;
+  }
+  catch(Exception e) {
+    send(p);
+  }
+  //we need some sort of int like didShoot and gotShot in player to send along with this stuff
+}
+
+public void read() {
+  try {
+    String line="";
+    if (amServer) {
+      Client player=server.available();
+      if (player !=null) {
+        line += player.readString();
+      }
+      if (!line.equals("")) {
+        server.write(line);
+      }
+    } else {
+      line += client.readString();
+    }
+    if (!line.equals("")) {
+      parse(line);
+    }
+  }
+  catch(Exception e) {
+    read();
+  }
+}
+private boolean nullCheck(String s) {
+  if (s.indexOf(",")==-1) {
+    return true;
+  }
+  return false;
+}
+public void parse(String s) {
+  if (nullCheck(s)) {
+    return;
+  }
+  String designation = s.substring(0, s.indexOf(","));
+  int des =(int) Float.parseFloat(designation);
+  s = s.substring(s.indexOf(",") + 1);
+  if (nullCheck(s)||des==myPlayer) {         
+    return;
+  }
+  String x = s.substring(0, s.indexOf(","));
+  float xVal = Float.parseFloat(x);
+  s = s.substring(s.indexOf(",") + 1);
+  if (nullCheck(s)) {
+    players.get(des).x = xVal;
+    return;
+  }
+  String y = s.substring(0, s.indexOf(","));
+  float yVal = Float.parseFloat(y);
+  s = s.substring(s.indexOf(",") + 1);
+  if (nullCheck(s)) {
+    players.get(des).x = xVal;
+    players.get(des).y = yVal;
+    return;
+  }
+  String heading = s.substring(0, s.indexOf(","));
+  float hea = Float.parseFloat(heading);
+  s = s.substring(s.indexOf(",")+1);
+  if (nullCheck(s)) {
+    players.get(des).x = xVal;
+    players.get(des).y = yVal;
+    players.get(des).heading = hea;
+    return;
+  }
+  String sh = s.substring(0, s.indexOf(","));
+  int shot = (int)Float.parseFloat(sh);
+  //s = s.substring(s.indexOf(",")+1);
+
+  players.get(des).x = xVal;
+  players.get(des).y = yVal;
+  players.get(des).heading = hea;
+
+  if (shot==1) {
+    Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
+    displayables.add(b);
+    positionables.add(b);
+    moveables.add(b);
+  }
+}
+
+public void playerMovement() {
+  try {
+    for (Player p : players) {
+      if (p.designation==myPlayer) {
+        p.move();
+        if (dDown) {
+          p.heading+=.05;
+        }
+        if (aDown) {
+          if (p.hasLazer) {
+            if (lazerTime == 0) {
+              Lazer temp = new Lazer(p.x, p.y, p.heading);
+              displayables.add(temp);
+            }
+
+            lazerTime ++;
+          } else {
+            if (p.time > 15 && p.canShoot() ) {
+              Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+              displayables.add(b);
+              positionables.add(b);
+              moveables.add(b);
+            }
+          }
+        }
+        eliminate();
+        collision();
+        beenShot();
+        playCollide();
+        warped();
+        send(p);
+      } else {
+        read();
+      }
+    }
+  }
+  catch(Exception e) {
+    playerMovement();
+  }
+}
+void serverEvent(Server someServer, Client someClient) {
+  clientCount+=1;
+  server.write("Client:"+clientCount);
+}
+void clientEvent(Client someClient) {
+  if (myPlayer!=0) {
+    if (client.readString().indexOf(":")!=-1) {
+      clientCount+=1;
+      client.clear();
+    }
+    /*if (menu==false&&started) {
+     read();
+     client.clear();
+     }*/
+  }
+}
+public void draw() {
+  background(0);
+  if (menu||clientCount<playerCount-1) { 
+    makeMenu();
+    if (amServer&&server==null) {
+      myPlayer = 0;
+      server=new Server(this, 6666, "127.0.0.1" ); 
+      menu=false;
+    }
+    if (amClient&&client==null) {
+      try {
+        client=new Client(this, "127.0.0.1", 6666);
+        String s=client.readString();
+        myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
+        clientCount=myPlayer;
+        menu=false;
+        client.clear();
+        clientCount=myPlayer;
+        menu=false;
+        client.clear();
+      }
+      catch(Exception e) {
+      }
+    }
+  } else {
+    if (!menu&& clientCount==playerCount-1&&!started) {
+      for (int i = 0; i < playerCount; i++) {
+        Player p = new Player(i);
+        displayables.add(p);
+        positionables.add(p);
+        players.add(p);
+      }
+      started=true;
+    }
+    playerMovement();
+
+    if (myPlayer!=0) {
+      client.clear();
+    }
+
+    for ( Moveable m : moveables) {
+      m.move();
+      m.collide(positionables);
+    }
+
+    for ( Displayable d : displayables) {
+      d.display();
+    }
+
+    for (int i = moveables.size() - 1; i >= 0; i--) {
+      if (!moveables.get(i).state()) {
+        moveables.remove(i);
+      }
+    }
+
+    for (int i = displayables.size() - 1; i >= 0; i--) {
+      if (!displayables.get(i).state()) {
+        displayables.remove(i);
+      }
+    }
+
+    for (int i = positionables.size() - 1; i >= 0; i--) {
+      if (!positionables.get(i).state()) {
+        positionables.remove(i);
+      }
+    }
+  }
+}
