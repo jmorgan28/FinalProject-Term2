@@ -77,7 +77,20 @@ Jackson: <br>
 - made ability to shoot lazer and lazer class pickup<br>
 - made it so when collide with wall can still move (not reset to place) so that you can turn and get away from wall<br>
 
+5/29/16 <br>
 
+Jackson: <br>
+-made bullets do damage<br>
+-made bullet detection<br>
+-made it so players could die<br>
+
+
+5/30/16 <br>
+
+Jackson: <br>
+-made pilot mode for when health is 1<br>
+-adjusted display for this mode<br>
+-adjusted movement for this mode<br>
 
 <br>
 To Do:<br>
