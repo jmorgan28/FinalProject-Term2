@@ -16,6 +16,7 @@ public class Player implements Displayable {
     hp = 2;
     collide = false;
     hasLazer = false;
+    ifg = 0;
   }
   //// merge merge merge
   /*public boolean move() {
@@ -67,7 +68,6 @@ public class Player implements Displayable {
       hptime = 0;
       hp = 2;
     }
-    ifg = 0;
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
       y += (speed * .4) * sin(heading);
@@ -78,8 +78,11 @@ public class Player implements Displayable {
         //y = 100;
       }
     } else {
+      if(! collide){
       x += speed * cos(heading);
       y+= speed * sin(heading);
+      ifg = 0;
+      }
       if (collide) {
         if ((x >= 20 && x <= 580 && y <= 37 && (sin(heading) <= 0 && cos(heading) >= -1)) || (x >= 20 && x <= 580 && y >= 373 && (sin(heading) >= 0 && cos(heading) <= 1)) ) {
           y -= speed * sin(heading);
@@ -91,10 +94,19 @@ public class Player implements Displayable {
           ifg = 2;
           return true;
         } else {
+          if(ifg == 0){
+              x -= (speed +4) * cos(heading);
+              y -= (speed +4) * sin(heading);
+              return true; 
+        }
+        else{
           x += (speed) * cos(heading);
           y += (speed) * sin(heading);
           return true;
         }
+        }
+        
+          
         //x = 100;
         //y = 100;
       }
