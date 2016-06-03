@@ -42,11 +42,13 @@ public void setup() {
   started=false;
   mouseServer=false;
   mouseClient=false;
-  displayables.add(new Block(0, 0, 20, 400, 100));
-  displayables.add(new Block(580, 0, 20, 400, 100));
-  displayables.add(new Block(20, 0, 560, 20, 100));
-  displayables.add(new Block(20, 380, 560, 20, 100));
-  displayables.add(new Block(300, 200, 20, 20, 100));
+  displayables.add(new Block(0, 0, 20, 400, 100, false));
+  displayables.add(new Block(580, 0, 20, 400, 100, false));
+  displayables.add(new Block(20, 0, 560, 20, 100, false));
+  displayables.add(new Block(20, 380, 560, 20, 100, false));
+  displayables.add(new Block(300, 200, 20, 20, 100, false));
+  displayables.add(new Block(450, 200, 20, 20, 100, true));
+
   for (int i = 0; i < displayables.size(); i ++) {
     blocks.add((Block)(displayables.get(i)));
   }
@@ -217,12 +219,19 @@ public void playCollide() {
           //System.out.println(tmp.ellip(d)[1]);
 
           if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
-            tmp.setCol(true); // this nees to do something to hold back or turn triangle
-            //System.out.println("true");
-            d = 361;
-            k = blocks.size();
+            if (! blocks.get(k).boost) {
+              tmp.setCol(true); // this nees to do something to hold back or turn triangle
+              //System.out.println("true");
+              d = 361;
+              k = blocks.size();
+            } else {
+              tmp.boost= true;
+              d = 361;
+              k = blocks.size();
+            }
           } else {
             tmp.setCol(false);
+            tmp.boost = false;
           }
         }
       }

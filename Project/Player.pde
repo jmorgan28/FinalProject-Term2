@@ -1,6 +1,6 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
-  boolean state, collide, hasLazer;
+  boolean state, collide, hasLazer, boost;
   int designation, shot, hp, ifg, hptime;
   public Player(int number) {
     x=100;
@@ -16,6 +16,7 @@ public class Player implements Displayable {
     hp = 2;
     collide = false;
     hasLazer = false;
+    boost = false;
     ifg = 0;
   }
   //// merge merge merge
@@ -81,7 +82,7 @@ public class Player implements Displayable {
       y = 50;
     }
     //System.out.println(sin(heading));
-    println(collide);
+    // println(collide);
     time ++;
     if (hp == 1) {
       hptime ++;
@@ -101,10 +102,17 @@ public class Player implements Displayable {
       }
     } else {
       if (! collide) {
-        x += speed * cos(heading);
-        y+= speed * sin(heading);
-        ifg = 0;
+        if (boost) {
+          x += (speed+ 5) * cos(heading);
+          y += (speed + 5) * sin(heading);
+        } else {
+          x += speed * cos(heading);
+          y+= speed * sin(heading);
+         
+        }
+         ifg = 0;
       }
+
       if (collide) {
         if ((x >= 25 && x <= 575 && y <= 37 && (sin(heading) <= 0 && cos(heading) >= -1)) || (x >= 25 && x <= 575 && y >= 373 && (sin(heading) >= 0 && cos(heading) <= 1)) ) {
           y -= speed * sin(heading);
@@ -191,7 +199,7 @@ public class Player implements Displayable {
       }
       fill(255);
       ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
-      ellipse(x, y, 14, 14);
+      //ellipse(x, y, 14, 14);
       triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
         (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
         (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
