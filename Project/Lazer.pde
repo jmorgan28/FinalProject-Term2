@@ -1,6 +1,6 @@
 public class Lazer implements Displayable {
   //public boolean isDrop, isHeld;
-  public float x, y, heading, xx1, xx2, yy1, yy2;
+  public float x, y, heading, xx1, xx2, yy1, yy2, slope;
  
   boolean state;
 
@@ -15,6 +15,7 @@ public class Lazer implements Displayable {
     yy1 = (float)(y + (21 * Math.sin(heading)));
     xx2 = (float)(x + (300 * Math.cos(heading)));
     yy2 = (float)(y + (300 * Math.sin(heading)));
+    slope = (yy1 - yy2) / (xx1 - xx2);
     //isDrop = false;
     //isHeld = true;
     state = true;

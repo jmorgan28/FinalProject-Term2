@@ -28,7 +28,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout;
 
 Server server;
 Client client;
@@ -42,6 +42,7 @@ public void setup() {
   started=false;
   mouseServer=false;
   mouseClient=false;
+  lazerout = false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -167,7 +168,7 @@ public void collision() {
   }
 }
 
-public void beenShot() {
+public void beenShot() { ///////////////////////must add collission for ball form tooo!!!!!!!!!!!
   for (int i = 0; i < players.size(); i ++) {
     for (int k = 0; k < displayables.size(); k ++) {
       if (players.get(i) instanceof Player && displayables.get(k) instanceof Bullet) {
@@ -180,12 +181,12 @@ public void beenShot() {
           k --;
         }
       }
-      if (displayables.get(i) instanceof Lazer && players.get(i) instanceof Player) {
+      if (displayables.get(i) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer)) {
         Lazer temp = (Lazer) displayables.get(k);
         Player tempo = players.get(i);
         double len = Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
         for (double w = 0; w <= len; w++) {
-          if (tempo.inTriangle((temp.xx1 + (i * cos(temp.heading))), (temp.yy1 + (i * sin(temp.heading))))) {
+          if (tempo.inTriangle(((temp.xx1 + i) * cos(temp.heading)), ((temp.yy1 + i) * sin(temp.heading)))) {
             tempo.hp --;
             w = len + 1;
           }
@@ -244,11 +245,13 @@ public void playCollide() {
           f --;
         }
       }
-      if (displayables.get(f) instanceof Lazer && lazerTime > 9) {
+      //println(lazerTime);
+      if (displayables.get(f) instanceof Lazer && lazerTime > 15) {
         displayables.remove(f);
         f --;
         players.get(i).hasLazer = false;
         lazerTime = 0;
+        lazerout = false;
       }
     }
   }
@@ -382,6 +385,9 @@ public void playerMovement() {
     for (Player p : players) {
       if (p.designation==myPlayer) {
         p.move();
+        if (lazerout) {
+          lazerTime ++;
+        }
         if (dDown) {
           p.heading+=.05;
         }
@@ -389,10 +395,9 @@ public void playerMovement() {
           if (p.hasLazer) {
             if (lazerTime == 0) {
               Lazer temp = new Lazer(p.x, p.y, p.heading);
+              lazerout = true;
               displayables.add(temp);
             }
-
-            lazerTime ++;
           } else {
             if (p.time > 15 && p.canShoot() ) {
               Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
