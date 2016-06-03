@@ -80,27 +80,38 @@ Jackson: <br>
 5/29/16 <br>
 
 Jackson: <br>
--made bullets do damage<br>
--made bullet detection<br>
--made it so players could die<br>
+- made bullets do damage<br>
+- made bullet detection<br>
+- made it so players could die<br>
 
 
 5/30/16 <br>
 
 Jackson: <br>
--made pilot mode for when health is 1<br>
--adjusted display for this mode<br>
--adjusted movement for this mode<br>
+- made pilot mode for when health is 1<br>
+- adjusted display for this mode<br>
+- adjusted movement for this mode<br>
 
 6/1/16 <br>
 
 Jackson: <br>
--now don't bounce back when collide with wall. Glide against it<br>
--balance changes<br>
--made time for pilot mode so eventually return to ship mode if not shot<br>
--made collission detection for lazer (not sure if works. for some reason lazer is acting infinitely in multiplayer)<br>
--broke collision in corners<br>
--broke collission for stray blocks(now act as speed boost)<br>
+- now don't bounce back when collide with wall. Glide against it<br>
+- balance changes<br>
+- made time for pilot mode so eventually return to ship mode if not shot<br>
+- made collission detection for lazer (not sure if works. for some reason lazer is acting infinitely in multiplayer)<br>
+- broke collision in corners<br>
+- broke collission for stray blocks(now act as speed boost)<br>
+
+6/2/16 <br>
+
+Jackson: <br>
+- now collision with wall works correctly and diferently depending on location<br>
+- can no longer escape map<br>
+- made speed boost<br>
+- made lazer work correctly on server side<br>
+
+
+<br> !!!!!!!!<br> REMINDER MAKE LAZER DO DAMAGE FOR BOTH TRIANGLE AND CIRCLE FORMS<br>
 
 <br>
 To Do:<br>
