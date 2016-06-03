@@ -173,11 +173,11 @@ public void beenShot() { ///////////////////////must add collission for ball for
     for (int k = 0; k < displayables.size(); k ++) {
       if (players.get(i) instanceof Player && displayables.get(k) instanceof Bullet) {
         if (players.get(i).inTriangle(((Bullet)displayables.get(k)).x, ((Bullet)displayables.get(k)).y)) {
-          players.get(i).hp --;
           Bullet temp = (Bullet) moveables.get(i);
           displayables.remove(temp);
           positionables.remove(temp);
           moveables.remove(temp);
+          players.get(i).hp --;
           k --;
         }
       }
@@ -331,39 +331,23 @@ private boolean nullCheck(String s) {
   return false;
 }
 public void parse(String s) {
-  if (nullCheck(s)) {
-    return;
-  }
   String designation = s.substring(0, s.indexOf(","));
   int des =(int) Float.parseFloat(designation);
   s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)||des==myPlayer) {         
+  if(des==myPlayer){
     return;
   }
   String x = s.substring(0, s.indexOf(","));
   float xVal = Float.parseFloat(x);
   s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {
-    players.get(des).x = xVal;
-    return;
-  }
+
   String y = s.substring(0, s.indexOf(","));
   float yVal = Float.parseFloat(y);
   s = s.substring(s.indexOf(",") + 1);
-  if (nullCheck(s)) {
-    players.get(des).x = xVal;
-    players.get(des).y = yVal;
-    return;
-  }
+
   String heading = s.substring(0, s.indexOf(","));
   float hea = Float.parseFloat(heading);
   s = s.substring(s.indexOf(",")+1);
-  if (nullCheck(s)) {
-    players.get(des).x = xVal;
-    players.get(des).y = yVal;
-    players.get(des).heading = hea;
-    return;
-  }
   String sh = s.substring(0, s.indexOf(","));
   int shot = (int)Float.parseFloat(sh);
   //s = s.substring(s.indexOf(",")+1);
@@ -449,12 +433,9 @@ public void draw() {
     }
     if (amClient&&client==null) {
       try {
-        client=new Client(this, "127.0.0.1", 6666);
+        client=new Client(this, "149.89.161.123", 6666);
         String s=client.readString();
         myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
-        clientCount=myPlayer;
-        menu=false;
-        client.clear();
         clientCount=myPlayer;
         menu=false;
         client.clear();
