@@ -294,9 +294,9 @@ public void delete(float x, float y) {
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer +",!" );
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer + "," + p.hp +",!" );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer +",!" );
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer + "," + p.hp +",!" );
     }
     p.shot = 0;
   }
@@ -374,13 +374,19 @@ public String parse(String s) {
   String la = s.substring(0, s.indexOf(","));
   boolean laa = Boolean.valueOf(la);
   s = s.substring(s.indexOf(",")+1);
-
+  if (nullCheck(s)) {
+    return "";
+  }
+  String hhh = s.substring(0, s.indexOf(","));
+  int hh = Integer.parseInt(hhh);
+  s = s.substring(s.indexOf(",")+1);
 
 
   players.get(des).x = xVal;
   players.get(des).y = yVal;
   players.get(des).heading = hea;
   players.get(des).hasLazer = laa;
+  players.get(des).hp = hh;
 
 
   if (shot==1) {
@@ -397,7 +403,7 @@ public void playerMovement() {
     Player p=players.get(myPlayer);
     if (p.designation==myPlayer) {
       p.move();
- 
+
       if (dDown) {
         p.heading+=.05;
       }
@@ -501,8 +507,8 @@ public void draw() {
       started=true;
     }
     if (lazerout) {
-        lazerTime ++;
-      }
+      lazerTime ++;
+    }
     playerMovement();
 
     if (myPlayer!=0) {
