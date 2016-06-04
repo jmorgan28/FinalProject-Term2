@@ -1,7 +1,7 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
-  boolean state, collide, hasLazer, boost;
-  int designation, shot, hp, ifg, hptime;
+  boolean state, collide, boost;
+  int designation, shot, hp, ifg, hptime,hasLazer;
   public Player(int number) {
     x=100;
     y=100;
@@ -15,7 +15,7 @@ public class Player implements Displayable {
     hptime = 0;
     hp = 2;
     collide = false;
-    hasLazer = false;
+    hasLazer = 0;
     boost = false;
     ifg = 0;
   }
@@ -193,7 +193,7 @@ public class Player implements Displayable {
       fill(255);
       ellipse(x, y, 9, 9);
     } else {
-      if (! hasLazer) {
+      if (hasLazer==0) {
         noStroke();
       }
       fill(255);

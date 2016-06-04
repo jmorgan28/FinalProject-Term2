@@ -182,7 +182,7 @@ public void beenShot() { ///////////////////////must add collission for ball for
           k --;
         }
       }
-      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer) && !stopdam) {
+      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && players.get(i).hasLazer==0 && !stopdam) {
         Lazer temp = (Lazer) displayables.get(k);
         Player tempo = players.get(i);
         float len = (float)Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
@@ -244,7 +244,7 @@ public void playCollide() {
     for (int f = 0; f < displayables.size(); f ++) {
       if (displayables.get(f) instanceof LazerDrop) {
         if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y) && players.get(i).hp != 1) {
-          players.get(i).hasLazer = true;
+          players.get(i).hasLazer = 1;
           displayables.remove(f);
           f --;
         }
@@ -253,7 +253,7 @@ public void playCollide() {
       if (displayables.get(f) instanceof Lazer && lazerTime > 15) {
         displayables.remove(f);
         f --;
-        players.get(i).hasLazer = false;
+        players.get(i).hasLazer = 0;
         //lazerTime = 0;
         lazerout = false;
       }
@@ -305,15 +305,22 @@ public void send(Player p) {
   }
 }
 
-public String read(String s) {
+public String read(String s, int index) {
   try {
     if (amServer) {
-      Client player=server.available();
+      Client player=server.clients[index];
       if (player !=null) {
         s += player.readString();
       }
       if (!nullCheck(s)) {
-        server.write(s);
+        int loc=0;
+        while (loc<server.clientCount&&player!=null) {
+          player=server.clients[loc];
+          if (loc!=index) {
+            player.write(s);
+          }
+          loc+=1;
+        }
       }
     } 
     if (!nullCheck(s)) {
@@ -372,7 +379,7 @@ public String parse(String s) {
     return "";
   }
   String la = s.substring(0, s.indexOf(","));
-  boolean laa = Boolean.valueOf(la);
+  int laa = (int)Float.parseFloat(sh);
   s = s.substring(s.indexOf(",")+1);
   if (nullCheck(s)) {
     return "";
@@ -408,7 +415,7 @@ public void playerMovement() {
         p.heading+=.05;
       }
       if (aDown) {
-        if (p.hasLazer) {
+        if (p.hasLazer==1) {
           if (lazerTime == 0) {
             Lazer temp = new Lazer(p.x, p.y, p.heading);
             lazerout = true;
@@ -436,22 +443,21 @@ public void playerMovement() {
     int index=0;
     if (amServer&&server.clients.length>1) {
       player=server.clients[0];
-      index=0;
     } else {
       s=client.readString();
-
       client.clear();
     }
-    while (amServer&&player!=null) {
-      read(s);
+    while (amServer&&player!=null&&index<server.clientCount) {
+      read(s, index);
       index+=1;
-      if (index<server.clients.length) {
+      if (index<server.clientCount) {
         player=server.clients[index];
       }
     }
 
     while (amClient&&!fullCheck(s)&&index<playerCount) {
-      read(s.substring(0, s.indexOf("!")+1));
+
+      read(s.substring(0, s.indexOf("!")+1), 0);
       s=s.substring(s.indexOf("!")+1);
       index+=1;
     }
@@ -464,7 +470,7 @@ void serverEvent(Server someServer, Client someClient) {
   server.write("Client:"+clientCount);
 }
 void clientEvent(Client someClient) {
-  if (myPlayer!=0) {
+  if (myPlayer!=0&&!started) {
     if (client.readString().indexOf(":")!=-1) {
       clientCount+=1;
       client.clear();
@@ -510,10 +516,6 @@ public void draw() {
       lazerTime ++;
     }
     playerMovement();
-
-    if (myPlayer!=0) {
-      client.clear();
-    }
 
     for ( Moveable m : moveables) {
       m.move();
