@@ -28,7 +28,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam;
 
 Server server;
 Client client;
@@ -43,6 +43,7 @@ public void setup() {
   mouseServer=false;
   mouseClient=false;
   lazerout = false;
+  stopdam = false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -181,7 +182,7 @@ public void beenShot() { ///////////////////////must add collission for ball for
           k --;
         }
       }
-      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer)) {
+      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer) && !stopdam) {
         Lazer temp = (Lazer) displayables.get(k);
         Player tempo = players.get(i);
         float len = (float)Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
@@ -190,6 +191,7 @@ public void beenShot() { ///////////////////////must add collission for ball for
             println("x:" + temp.xx1 + (w * cos(temp.heading)));
             println("y:" + temp.yy1 + (w * sin(temp.heading)));
             tempo.hp --;
+            stopdam = true;
             w = len + 1;
           }
         }
