@@ -147,16 +147,16 @@ public void collision() {
           i --;
         }
       } else {
-        System.out.println("player");
+        //System.out.println("player");
         if (moveables.get(i) instanceof Player) {
           Player tmp = (Player) moveables.get(i);
           for (int d = 0; d < 360; d ++) {
-            System.out.println(tmp.ellip(d)[0]);
-            System.out.println(tmp.ellip(d)[1]);
+            //System.out.println(tmp.ellip(d)[0]);
+            //System.out.println(tmp.ellip(d)[1]);
 
             if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
               tmp.setCol(true); // this nees to do something to hold back or turn triangle
-              System.out.println("true");
+              //System.out.println("true");
               d = 361;
               k = blocks.size();
             } else {
@@ -188,8 +188,8 @@ public void beenShot() { ///////////////////////must add collission for ball for
         float len = (float)Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
         for (float w = 0; w <= len; w++) {
           if (tempo.inTriangle(temp.xx1 + (w * cos(temp.heading)), temp.yy1 + (w * sin(temp.heading)))) {
-            println("x:" + temp.xx1 + (w * cos(temp.heading)));
-            println("y:" + temp.yy1 + (w * sin(temp.heading)));
+            //println("x:" + temp.xx1 + (w * cos(temp.heading)));
+            //println("y:" + temp.yy1 + (w * sin(temp.heading)));
             tempo.hp --;
             stopdam = true;
             w = len + 1;
@@ -254,7 +254,7 @@ public void playCollide() {
         displayables.remove(f);
         f --;
         players.get(i).hasLazer = false;
-        lazerTime = 0;
+        //lazerTime = 0;
         lazerout = false;
       }
     }
@@ -397,9 +397,7 @@ public void playerMovement() {
     Player p=players.get(myPlayer);
     if (p.designation==myPlayer) {
       p.move();
-      if (lazerout) {
-        lazerTime ++;
-      }
+ 
       if (dDown) {
         p.heading+=.05;
       }
@@ -502,6 +500,9 @@ public void draw() {
       }
       started=true;
     }
+    if (lazerout) {
+        lazerTime ++;
+      }
     playerMovement();
 
     if (myPlayer!=0) {
