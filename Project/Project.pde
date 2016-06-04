@@ -181,12 +181,14 @@ public void beenShot() { ///////////////////////must add collission for ball for
           k --;
         }
       }
-      if (displayables.get(i) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer)) {
+      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && (! players.get(i).hasLazer)) {
         Lazer temp = (Lazer) displayables.get(k);
         Player tempo = players.get(i);
-        double len = Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
-        for (double w = 0; w <= len; w++) {
-          if (tempo.inTriangle(((temp.xx1 + i) * cos(temp.heading)), ((temp.yy1 + i) * sin(temp.heading)))) {
+        float len = (float)Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
+        for (float w = 0; w <= len; w++) {
+          if (tempo.inTriangle(temp.xx1 + (w * cos(temp.heading)), temp.yy1 + (w * sin(temp.heading)))) {
+            println("x:" + temp.xx1 + (w * cos(temp.heading)));
+            println("y:" + temp.yy1 + (w * sin(temp.heading)));
             tempo.hp --;
             w = len + 1;
           }
@@ -290,9 +292,9 @@ public void delete(float x, float y) {
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+",!" );
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer +",!" );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+",!" );
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer +",!" );
     }
     p.shot = 0;
   }
@@ -364,10 +366,20 @@ public String parse(String s) {
   String sh = s.substring(0, s.indexOf(","));
   int shot = (int)Float.parseFloat(sh);
   s = s.substring(s.indexOf(",")+1);
+  if (nullCheck(s)) {
+    return "";
+  }
+  String la = s.substring(0, s.indexOf(","));
+  boolean laa = Boolean.valueOf(la);
+  s = s.substring(s.indexOf(",")+1);
+
+
 
   players.get(des).x = xVal;
   players.get(des).y = yVal;
   players.get(des).heading = hea;
+  players.get(des).hasLazer = laa;
+
 
   if (shot==1) {
     Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
