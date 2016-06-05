@@ -294,9 +294,9 @@ public void delete(float x, float y) {
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer + "," + p.hp +",!" );
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer + "," + p.time +",!" );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer + "," + p.hp +",!" );
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer + "," + p.time +",!" );
     }
     p.shot = 0;
   }
@@ -385,7 +385,7 @@ public String parse(String s) {
     return "";
   }
   String hhh = s.substring(0, s.indexOf(","));
-  int hh = Integer.parseInt(hhh);
+  float hh = Float.parseFloat(hhh);
   s = s.substring(s.indexOf(",")+1);
 
 
@@ -393,7 +393,7 @@ public String parse(String s) {
   players.get(des).y = yVal;
   players.get(des).heading = hea;
   players.get(des).hasLazer = laa;
-  players.get(des).hp = hh;
+  players.get(des).time = hh;
 
 
   if (shot==1) {

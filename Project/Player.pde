@@ -3,12 +3,32 @@ public class Player implements Displayable {
   boolean state, collide, boost;
   int designation, shot, hp, ifg, hptime,hasLazer;
   public Player(int number) {
-    x=100;
-    y=100;
-    heading=0;
     speed=1;
     state=true;
     designation=number;
+    if(designation == 0){
+      x=100;
+      y=100;
+      heading=0;
+
+    }
+    if(designation == 3){
+      x=500;
+      y= 100;
+      heading= 3;
+    }  
+    if(designation == 2){
+      x=100;
+      y= 300;
+      heading= 0;
+
+    }  
+    if(designation == 1){
+      x=500;
+      y= 300;
+      heading= 3;
+
+    } 
     size=20;
     lim = 3;
     time = 0;
