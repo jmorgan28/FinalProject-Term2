@@ -145,9 +145,6 @@ public class Player implements Displayable {
   }
 
   public void display() {
-    if (designation==1) {
-      println(designation +"   "+hptime+"     "+hasLazer);
-    }
     time++;
     if (hp == 1) {
       hptime ++;

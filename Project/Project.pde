@@ -389,6 +389,7 @@ public String parse(String s) {
   int hhh = (int)Float.parseFloat(hhhh);
   s = s.substring(s.indexOf(",")+1);
 
+  players.get(des).setState(true);
   players.get(des).x = xVal;
   players.get(des).y = yVal;
   players.get(des).heading = hea;
@@ -513,12 +514,16 @@ public void draw() {
     warped();
     send(players.get(myPlayer));
     for ( Moveable m : moveables) {
-      m.move();
-      m.collide(positionables);
+      if (m.state()) {
+        m.move();
+        m.collide(positionables);
+      }
     }
 
     for ( Displayable d : displayables) {
-      d.display();
+      if (d.state()) {
+        d.display();
+      }
     }
 
     for (int i = moveables.size() - 1; i >= 0; i--) {
@@ -528,7 +533,7 @@ public void draw() {
     }
 
     for (int i = displayables.size() - 1; i >= 0; i--) {
-      if (!displayables.get(i).state()) {
+      if (!displayables.get(i).state()&&!(displayables.get(i) instanceof Player)) {
         displayables.remove(i);
       }
     }
