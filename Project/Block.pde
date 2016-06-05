@@ -20,6 +20,9 @@ public class Block implements Displayable {
     return state;
   }
 
+  public boolean setState(boolean b) {
+    return state=b;
+  }
   public void display() {
     if (! boost) {
       fill(c);

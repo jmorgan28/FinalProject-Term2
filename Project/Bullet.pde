@@ -13,6 +13,9 @@ public class Bullet implements Moveable, Displayable {
   public boolean state() {
     return state;
   }
+  public boolean setState(boolean b) {
+    return state=b;
+  }
 
   public void move() {
     x += speed * cos((heading)); 
@@ -25,13 +28,5 @@ public class Bullet implements Moveable, Displayable {
   public void display() {
     fill(255);
     ellipse(x, y, size, size);
-  }
-
-  public float getX() {
-    return x;
-  }
-
-  public float getY() {
-    return y;
   }
 }

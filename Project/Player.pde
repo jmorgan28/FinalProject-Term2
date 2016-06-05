@@ -28,53 +28,14 @@ public class Player implements Displayable {
     } 
     size=20;
     lim = 3;
-    time = 0;
     hptime = 0;
+    time=0;
     hp = 2;
     collide = false;
     hasLazer = 0;
     boost = false;
     ifg = 0;
   }
-  //// merge merge merge
-  /*public boolean move() {
-   System.out.println(heading);
-   time ++;
-   ifg = 0;
-   if (hp == 1) {
-   x += (speed * .4) * cos(heading);
-   y += (speed * .4) * sin(heading);
-   if (collide) { 
-   x -= ((speed *.4)+4) * cos(heading);
-   y -= ((speed *.4) + 4) * sin(heading);
-   //x = 100;
-   //y = 100;
-   }
-   } else {
-   x += speed * cos(heading);
-   y+= speed * sin(heading);
-   if (collide) {
-   if ((x >= 20 && x <= 580 && y <= 37 ) || (x >= 20 && x <= 580 && y >= 373) ) {
-   y -= speed * sin(heading);
-   ifg =1;
-   return true;
-   }
-   if ((y >= 20 && y <=380 && x <=37) || (y >= 20 && y <=380 && x >=577)) {
-   x -= speed * cos(heading);
-   ifg = 2;
-   return true;
-   } else {
-   x -= (speed +4) * cos(heading);
-   y -= (speed +4) * sin(heading);
-   return true;
-   }
-   //x = 100;
-   //y = 100;
-   }
-   }
-   return true;
-   }
-   */
 
   public boolean move() {
     if (y < 20) {
@@ -98,24 +59,12 @@ public class Player implements Displayable {
       x= 50;
       y = 50;
     }
-    //System.out.println(sin(heading));
-    // println(collide);
-    time ++;
-    if (hp == 1) {
-      hptime ++;
-    }
-    if (hptime >= 550) {
-      hptime = 0;
-      hp = 2;
-    }
     if (hp == 1) {
       x += (speed * .4) * cos(heading);
       y += (speed * .4) * sin(heading);
       if (collide) { 
         x -= ((speed *.4)+4) * cos(heading);
         y -= ((speed *.4) + 4) * sin(heading);
-        //x = 100;
-        //y = 100;
       }
     } else {
       if (! collide) {
@@ -150,23 +99,9 @@ public class Player implements Displayable {
             return true;
           }
         }
-
-
-        //x = 100;
-        //y = 100;
       }
     }
     return true;
-  }
-
-
-  public void canMove(float x, float y) {
-    float p1x = (float)(x + (20 * Math.cos(heading)));
-    float p1y = (float)(y + (20 * Math.sin(heading)));
-    float p2x = (float)(x + (15 * Math.cos(heading - 90)));
-    float p2y = (float)(y + (15 * Math.sin(heading - 90)));
-    float p3x = (float)(x + (15 * Math.cos(heading + 90)));
-    float p3y = (float)(y + (15 * Math.sin(heading + 90)));
   }
 
   public float[] ellip(int degrees) {
@@ -180,7 +115,11 @@ public class Player implements Displayable {
 
 
   public boolean state() {
-    return state;
+    return hp > 0&&state;
+  }
+
+  public boolean setState(boolean b) {
+    return state=b;
   }
 
   public boolean canShoot() {
@@ -206,6 +145,17 @@ public class Player implements Displayable {
   }
 
   public void display() {
+    if (designation==1) {
+      println(designation +"   "+hptime+"     "+hasLazer);
+    }
+    time++;
+    if (hp == 1) {
+      hptime ++;
+    }
+    if (hptime >= 550) {
+      hptime = 0;
+      hp = 2;
+    }
     int f1, f2, f3;
     f1 = 0;
     f2 = 0;
@@ -231,37 +181,18 @@ public class Player implements Displayable {
       f3 = 255;
     } 
     if (hp <= 1) {
-      fill(f1,f2,f3);
+      fill(f1, f2, f3);
       ellipse(x, y, 9, 9);
     } else {
       if (hasLazer==0) {
         noStroke();
       }
-      fill(f1,f2,f3);
-      ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
-      //ellipse(x, y, 14, 14);
+      fill(f1, f2, f3);
       triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
         (float)(x + (15 * Math.cos(heading - 90))), (float)(y + (15 * Math.sin(heading - 90))), 
         (float)(x + (15 * Math.cos(heading + 90))), (float)(y + (15 * Math.sin(heading + 90))));
     }
   }
-
-  public void setCol(boolean b) {
-    collide = b;
-  }
-
-  public float getX() {
-    return x;
-  }
-
-  public float getY() {
-    return y;
-  }
-
-  public boolean amDead() {
-    return hp <= 0;
-  }
-
 
   public boolean inTriangle(float xxx, float yyy) {
     if (hp ==2) {

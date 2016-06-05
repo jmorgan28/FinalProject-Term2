@@ -16,6 +16,10 @@ public class LazerDrop implements Displayable {
     return state;
   }
 
+  public boolean setState(boolean b) {
+    return state=b;
+  }
+
   public boolean amLazer(float a, float b) {
     return  a >= x && a <= x + 15 && b >= y && b <= y + 15;
   }

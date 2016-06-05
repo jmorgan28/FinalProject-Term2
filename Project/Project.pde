@@ -2,6 +2,7 @@ import processing.net.*; //<>//
 
 public interface Positionable {
   public boolean state();
+  public boolean setState(boolean b);
 }
 public interface Displayable extends Positionable {
   public void display();
@@ -29,7 +30,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2, menu3;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2;
 
 char current;
 Server server;
@@ -48,7 +49,6 @@ public void setup() {
   lazerout = false;
   stopdam = false;
   menu2 =false;
-  menu3 = false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -76,127 +76,99 @@ public void keyPressed() {
 
 public void makeMenu() {
   background(255, 0, 0); 
-  textFont(c, 36);
   fill(255);
-  text("Join as Server", 0, 150);
-  textFont(s, 36);
-  fill(255);
-  text("Join as Client", 0, 300);
-  if (mousePressed||mouseClient||mouseServer) {
-    menutime ++;
-    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100)||mouseServer || menu2) {
-      if (! menu2) {
-        mouseServer=true;
-        background(255, 0, 0); 
-        textFont(n, 20);
-        fill(255);
-        text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
-        if (keyPressed) {
-          if (key != ENTER && served == "127.0.0.1") {
-            served = "";
-          }
-          if (key == BACKSPACE && served.length() > 0) {
-            served = served.substring(0, served.length() -1);
-          } else {
-            current = key;
-            if (menutime % 10 == 0) {
-              served += current;
-            }
-            println(served);
-            if (key == ENTER) {
-              menu2 = true;
-            }
-          }
+  menutime ++;
+  if (!mouseServer&&!mouseClient) {
+    textFont(c, 36);
+    text("Join as Server", 0, 150);
+    textFont(s, 36);
+    text("Join as Client", 0, 300);
+  }
+  if (((mousePressed&&(mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100))||mouseServer)&&!menu2) {
+    mouseServer=true;
+    textFont(n, 20);
+    if (! menu2) {
+      text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
+      if (keyPressed) {
+        if (key != ENTER && served == "127.0.0.1") {
+          served = "";
         }
-        PFont br = createFont("Arial", 16, true);
-        textFont(br, 20);
-        fill(255);
-        text(served, 200, 300);
-      } else {
-        mouseServer=true;
-        background(255, 0, 0); 
-        textFont(n, 20);
-        fill(255);
-        text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
-
-        if (keyPressed) {
-          if (key=='1') {
-            playerCount =1;
-            amServer = true;
-          }
-          if (key=='2') {
-            playerCount =2;
-            amServer = true;
-          }
-          if (key=='3') {
-            playerCount =3;
-            amServer = true;
-          }
-          if (key=='4') {
-            playerCount =4;
-            amServer = true;
-          }
+        if (key == BACKSPACE && served.length() > 0) {
+          served = served.substring(0, served.length() -1);
+        } else if (key==ENTER) {
+          menu2 = true;
+        } else if (menutime % 10 == 0) {
+          served += current;
         }
       }
     }
-
-    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250)||mouseClient || menu3) {
-      if (! menu3) {
-        mouseClient=true;
-        background(255, 0, 0); 
-        textFont(n, 20);
-        fill(255);
-        text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
-        if (keyPressed) {
-          if (key != ENTER && served == "127.0.0.1") {
-            served = "";
-          }
-          if (key == BACKSPACE && served.length() > 0) {
-            served = served.substring(0, served.length() -1);
-          } else {
-            current = key;
-            if (menutime % 10 == 0) {
-              served += current;
-            }
-            println(served);
-            if (key == ENTER) {
-              menu3 = true;
-            }
+    PFont br = createFont("Arial", 16, true);
+    textFont(br, 20);
+    text(served, 200, 300);
+  } else if (((mousePressed&&(mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250))||mouseClient)&&!menu2) {
+    mouseClient=true;
+    textFont(n, 20);
+    if (! menu2) {
+      text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
+      if (keyPressed) {
+        if (key != ENTER && served == "127.0.0.1") {
+          served = "";
+        }
+        if (key == BACKSPACE && served.length() > 0) {
+          served = served.substring(0, served.length() -1);
+        } else {
+          current=key;
+          if (key == ENTER) {
+            menu2 = true;
+          } else if (menutime % 10 == 0) {
+            served += current;
           }
         }
-        PFont br = createFont("Arial", 16, true);
-        textFont(br, 20);
-        fill(255);
-        text(served, 200, 300);
-      } else {
-        mouseClient=true;
-        background(255, 0, 0); 
-        textFont(n, 20);
-        fill(255);
-        text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
-
-        if (keyPressed) {
-          if (key=='1') {
-            playerCount =1;
-            amClient = true;
-          }
-          if (key=='2') {
-            playerCount =2;
-            amClient = true;
-          }
-          if (key=='3') {
-            playerCount =3;
-            amClient = true;
-          }
-          if (key=='4') {
-            playerCount =4;
-            amClient = true;
-          }
+      }
+      PFont br = createFont("Arial", 16, true);
+      textFont(br, 20);
+      text(served, 200, 300);
+    }
+  } 
+  if (menu2) {
+    text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
+    if (keyPressed) {
+      if (key=='1') {
+        playerCount =1;
+        if (mouseServer) {
+          amServer=true;
+        } else {
+          amClient = true;
+        }
+      }
+      if (key=='2') {
+        playerCount =2;
+        if (mouseServer) {
+          amServer=true;
+        } else {
+          amClient = true;
+        }
+      }
+      if (key=='3') {
+        playerCount =3;
+        if (mouseServer) {
+          amServer=true;
+        } else {
+          amClient = true;
+        }
+      }
+      if (key=='4') {
+        playerCount =4;
+        if (mouseServer) {
+          amServer=true;
+        } else {
+          amClient = true;
         }
       }
     }
   }
 }
+
 
 public void collision() {
   for (int i = 0; i < moveables.size(); i ++) {
@@ -204,28 +176,19 @@ public void collision() {
       if (moveables.get(i) instanceof Bullet) {
         Bullet temp = (Bullet) moveables.get(i);
         if (blocks.get(k).amBox(temp.x, temp.y)) { 
-          displayables.remove(temp);
-          positionables.remove(temp);
-          moveables.remove(temp);
+          temp.state=false;
           k = blocks.size();
-          //System.out.println("bull");
-          i --;
         }
       } else {
-        //System.out.println("player");
         if (moveables.get(i) instanceof Player) {
           Player tmp = (Player) moveables.get(i);
           for (int d = 0; d < 360; d ++) {
-            //System.out.println(tmp.ellip(d)[0]);
-            //System.out.println(tmp.ellip(d)[1]);
-
-            if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
-              tmp.setCol(true); // this nees to do something to hold back or turn triangle
-              //System.out.println("true");
+            if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {
+              tmp.collide=true; 
               d = 361;
               k = blocks.size();
             } else {
-              tmp.setCol(false);
+              tmp.collide=false;
             }
           }
         }
@@ -234,27 +197,22 @@ public void collision() {
   }
 }
 
-public void beenShot() { ///////////////////////must add collission for ball form tooo!!!!!!!!!!!
+public void beenShot() { 
   for (int i = 0; i < players.size(); i ++) {
     for (int k = 0; k < displayables.size(); k ++) {
-      if (players.get(i) instanceof Player && displayables.get(k) instanceof Bullet) {
+      if (displayables.get(k) instanceof Bullet) {
         if (players.get(i).inTriangle(((Bullet)displayables.get(k)).x, ((Bullet)displayables.get(k)).y)) {
           Bullet temp = (Bullet) moveables.get(i);
-          displayables.remove(temp);
-          positionables.remove(temp);
-          moveables.remove(temp);
+          temp.state=false;
           players.get(i).hp --;
-          k --;
         }
       }
-      if (displayables.get(k) instanceof Lazer && players.get(i) instanceof Player && players.get(i).hasLazer==0 && !stopdam) {
+      if (displayables.get(k) instanceof Lazer && players.get(i).hasLazer==0 && !stopdam) {
         Lazer temp = (Lazer) displayables.get(k);
         Player tempo = players.get(i);
         float len = (float)Math.sqrt(Math.pow((temp.xx1-temp.xx2), 2.0) + Math.pow((temp.yy1-temp.yy2), 2.0));
         for (float w = 0; w <= len; w++) {
           if (tempo.inTriangle(temp.xx1 + (w * cos(temp.heading)), temp.yy1 + (w * sin(temp.heading)))) {
-            //println("x:" + temp.xx1 + (w * cos(temp.heading)));
-            //println("y:" + temp.yy1 + (w * sin(temp.heading)));
             tempo.hp --;
             stopdam = true;
             w = len + 1;
@@ -265,61 +223,37 @@ public void beenShot() { ///////////////////////must add collission for ball for
   }
 }
 
-
-public void eliminate() {
-  for (int i = 0; i < players.size(); i ++) {
-    if (players.get(i).amDead()) {
-      Player temp = players.get(i);
-      displayables.remove(temp);
-      positionables.remove(temp);
-      players.remove(temp);
-    }
-  }
-}
-
-
-
 public void playCollide() {
   for (int i = 0; i < players.size(); i ++) {
+    Player tmp = players.get(i);
     for (int k = 0; k < blocks.size(); k ++) {
-      if (players.get(i) instanceof Player) {
-        Player tmp = (Player) players.get(i);
-        for (int d = 0; d < 360; d ++) {
-          //System.out.println(tmp.ellip(d)[0]);
-          //System.out.println(tmp.ellip(d)[1]);
-
-          if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {// this has to be made to check for all tips of triangle 
-            if (! blocks.get(k).boost) {
-              tmp.setCol(true); // this nees to do something to hold back or turn triangle
-              //System.out.println("true");
-              d = 361;
-              k = blocks.size();
-            } else {
-              tmp.boost= true;
-              d = 361;
-              k = blocks.size();
-            }
+      for (int d = 0; d < 360; d ++) {
+        if (blocks.get(k).amBox(tmp.ellip(d)[0], tmp.ellip(d)[1])) {
+          if (! blocks.get(k).boost) {
+            tmp.collide=true;
+            d = 361;
+            k = blocks.size();
           } else {
-            tmp.setCol(false);
-            tmp.boost = false;
+            tmp.boost= true;
+            d = 361;
+            k = blocks.size();
           }
+        } else {
+          tmp.collide=false;
+          tmp.boost = false;
         }
       }
     }
     for (int f = 0; f < displayables.size(); f ++) {
       if (displayables.get(f) instanceof LazerDrop) {
-        if (((LazerDrop)displayables.get(f)).amLazer(players.get(i).x, players.get(i).y) && players.get(i).hp != 1) {
-          players.get(i).hasLazer = 1;
-          displayables.remove(f);
-          f --;
+        if (((LazerDrop)displayables.get(f)).amLazer(tmp.x, tmp.y) && tmp.hp != 1) {
+          tmp.hasLazer = 1;
+          displayables.get(f).setState(false);
         }
       }
-      //println(lazerTime);
       if (displayables.get(f) instanceof Lazer && lazerTime > 15) {
-        displayables.remove(f);
-        f --;
-        players.get(i).hasLazer = 0;
-        //lazerTime = 0;
+        displayables.get(f).setState(false);
+        tmp.hasLazer = 0;
         lazerout = false;
       }
     }
@@ -352,16 +286,12 @@ public void keyReleased() {
     dDown=false;
   }
 }
-
-public void delete(float x, float y) {
-}
-
 public void send(Player p) {
   try {
     if (amServer) { 
-      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer + "," + p.time +",!" );
+      server.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," + p.shot+"," + p.hasLazer + "," + p.hptime +"," + p.hp +",!" );
     } else {
-      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer + "," + p.time +",!" );
+      client.write(p.designation+"," + p.x+ "," + p.y + "," + p.heading+"," +  p.shot+"," + p.hasLazer + "," + p.hptime +"," + p.hp +",!" );
     }
     p.shot = 0;
   }
@@ -444,28 +374,38 @@ public String parse(String s) {
     return "";
   }
   String la = s.substring(0, s.indexOf(","));
-  int laa = (int)Float.parseFloat(sh);
+  int laa = (int)Float.parseFloat(la);
   s = s.substring(s.indexOf(",")+1);
   if (nullCheck(s)) {
     return "";
   }
-  String hhh = s.substring(0, s.indexOf(","));
-  float hh = Float.parseFloat(hhh);
+  String hh = s.substring(0, s.indexOf(","));
+  int h = (int)Float.parseFloat(hh);
   s = s.substring(s.indexOf(",")+1);
-
+  if (nullCheck(s)) {
+    return "";
+  }
+  String hhhh = s.substring(0, s.indexOf(","));
+  int hhh = (int)Float.parseFloat(hhhh);
+  s = s.substring(s.indexOf(",")+1);
 
   players.get(des).x = xVal;
   players.get(des).y = yVal;
   players.get(des).heading = hea;
   players.get(des).hasLazer = laa;
-  players.get(des).time = hh;
+  players.get(des).hptime = h;
+  players.get(des).hp= hhh;
 
 
-  if (shot==1) {
+  if (shot==1&&laa==0) {
     Bullet b = new Bullet((float)(xVal + (30 * Math.cos(hea))), (float)(yVal + (30 * Math.sin(hea))), hea);
     displayables.add(b);
     positionables.add(b);
     moveables.add(b);
+  } else if (laa==1&&shot==1&&lazerTime==0) {
+    Lazer temp = new Lazer(xVal, yVal, hea);
+    lazerout = true;
+    displayables.add(temp);
   }
   return s;
 }
@@ -473,34 +413,26 @@ public String parse(String s) {
 public void playerMovement() {
   try {
     Player p=players.get(myPlayer);
-    if (p.designation==myPlayer) {
-      p.move();
-
-      if (dDown) {
-        p.heading+=.05;
-      }
-      if (aDown) {
-        if (p.hasLazer==1) {
-          if (lazerTime == 0) {
-            Lazer temp = new Lazer(p.x, p.y, p.heading);
-            lazerout = true;
-            displayables.add(temp);
-          }
-        } else {
-          if (p.time > 15 && p.canShoot() ) {
-            Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
-            displayables.add(b);
-            positionables.add(b);
-            moveables.add(b);
-          }
+    p.move();
+    if (dDown) {
+      p.heading+=.05;
+    }
+    if (aDown) {
+      if (p.hasLazer==1) {
+        if (lazerTime == 0) {
+          Lazer temp = new Lazer(p.x, p.y, p.heading);
+          lazerout = true;
+          displayables.add(temp);
+          p.shot=1;
+        }
+      } else {
+        if (p.time > 15 && p.canShoot() ) {
+          Bullet b = new Bullet((float)(p.x + (30 * Math.cos(p.heading))), (float)(p.y + (30 * Math.sin(p.heading))), p.heading);
+          displayables.add(b);
+          positionables.add(b);
+          moveables.add(b);
         }
       }
-      eliminate();
-      collision();
-      beenShot();
-      playCollide();
-      warped();
-      send(p);
     }
 
     Client player=null;
@@ -519,9 +451,7 @@ public void playerMovement() {
         player=server.clients[index];
       }
     }
-
     while (amClient&&!fullCheck(s)&&index<playerCount) {
-
       read(s.substring(0, s.indexOf("!")+1), 0);
       s=s.substring(s.indexOf("!")+1);
       index+=1;
@@ -540,10 +470,6 @@ void clientEvent(Client someClient) {
       clientCount+=1;
       client.clear();
     }
-    /*if (!menu&&started) {
-     read();
-     client.clear();
-     }*/
   }
 }
 public void draw() {
@@ -552,7 +478,7 @@ public void draw() {
     makeMenu();
     if (amServer&&server==null) {
       myPlayer = 0;
-      server=new Server(this, 6666, served ); 
+      server=new Server(this, 6666, served); 
       menu=false;
     }
     if (amClient&&client==null) {
@@ -581,7 +507,11 @@ public void draw() {
       lazerTime ++;
     }
     playerMovement();
-
+    beenShot();
+    collision();
+    playCollide();
+    warped();
+    send(players.get(myPlayer));
     for ( Moveable m : moveables) {
       m.move();
       m.collide(positionables);

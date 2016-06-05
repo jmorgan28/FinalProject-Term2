@@ -22,4 +22,8 @@ public class Warp implements Displayable {
   public boolean state() {
     return state;
   }
+
+  public boolean setState(boolean b) {
+    return state=b;
+  }
 }

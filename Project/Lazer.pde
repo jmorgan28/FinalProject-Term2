@@ -1,11 +1,6 @@
 public class Lazer implements Displayable {
-  //public boolean isDrop, isHeld;
-  public float x, y, heading, xx1, xx2, yy1, yy2, slope;
- 
+  float x, y, heading, xx1, xx2, yy1, yy2, slope; 
   boolean state;
-
-
-
 
   public Lazer(float x1, float y1, float h1) {
     x = x1;
@@ -16,19 +11,16 @@ public class Lazer implements Displayable {
     xx2 = (float)(x + (300 * Math.cos(heading)));
     yy2 = (float)(y + (300 * Math.sin(heading)));
     slope = (yy1 - yy2) / (xx1 - xx2);
-    //isDrop = false;
-    //isHeld = true;
+
     state = true;
   }
 
   public boolean state() {
     return state;
   }
-
-  // public boolean amLazer(float a, float b) {
-  // return 
-  //}
-
+  public boolean setState(boolean b) {
+    return state=b;
+  }
 
   public void display() {
     stroke(0, 0, 255);
