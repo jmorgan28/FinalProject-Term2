@@ -344,7 +344,7 @@ public String parse(String s) {
     return "";
   }
   String designation = s.substring(0, s.indexOf(","));
-  int des =(int) Float.parseFloat(designation);
+  int des =Integer.parseInt(designation);
   s = s.substring(s.indexOf(",") + 1);
   if (nullCheck(s)||des==myPlayer) {
     return "";
