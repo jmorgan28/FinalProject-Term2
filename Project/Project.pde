@@ -29,7 +29,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2, menu3;
 
 char current;
 Server server;
@@ -48,6 +48,7 @@ public void setup() {
   lazerout = false;
   stopdam = false;
   menu2 =false;
+  menu3 = false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -139,29 +140,58 @@ public void makeMenu() {
       }
     }
 
-    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250)||mouseClient) {
-      mouseClient=true;
-      background(255, 0, 0); 
-      textFont(n, 36);
-      fill(255);
-      text("Input Player Number 1 -4", 0, 150);
+    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250)||mouseClient || menu3) {
+      if (! menu3) {
+        mouseClient=true;
+        background(255, 0, 0); 
+        textFont(n, 20);
+        fill(255);
+        text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
+        if (keyPressed) {
+          if (key != ENTER && served == "127.0.0.1") {
+            served = "";
+          }
+          if (key == BACKSPACE && served.length() > 0) {
+            served = served.substring(0, served.length() -1);
+          } else {
+            current = key;
+            if (menutime % 10 == 0) {
+              served += current;
+            }
+            println(served);
+            if (key == ENTER) {
+              menu3 = true;
+            }
+          }
+        }
+        PFont br = createFont("Arial", 16, true);
+        textFont(br, 20);
+        fill(255);
+        text(served, 200, 300);
+      } else {
+        mouseClient=true;
+        background(255, 0, 0); 
+        textFont(n, 36);
+        fill(255);
+        text("Input Player Number 1 -4", 0, 150);
 
-      if (keyPressed) {
-        if (key=='1') {
-          playerCount =1;
-          amClient = true;
-        }
-        if (key=='2') {
-          playerCount =2;
-          amClient = true;
-        }
-        if (key=='3') {
-          playerCount =3;
-          amClient = true;
-        }
-        if (key=='4') {
-          playerCount =4;
-          amClient = true;
+        if (keyPressed) {
+          if (key=='1') {
+            playerCount =1;
+            amClient = true;
+          }
+          if (key=='2') {
+            playerCount =2;
+            amClient = true;
+          }
+          if (key=='3') {
+            playerCount =3;
+            amClient = true;
+          }
+          if (key=='4') {
+            playerCount =4;
+            amClient = true;
+          }
         }
       }
     }
