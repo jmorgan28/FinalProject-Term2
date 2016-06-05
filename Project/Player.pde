@@ -1,33 +1,30 @@
 public class Player implements Displayable {
   float x, y, heading, speed, size, lim, time;
   boolean state, collide, boost;
-  int designation, shot, hp, ifg, hptime,hasLazer;
+  int designation, shot, hp, ifg, hptime, hasLazer;
   public Player(int number) {
     speed=1;
     state=true;
     designation=number;
-    if(designation == 0){
+    if (designation == 0) {
       x=100;
       y=100;
       heading=0;
-
     }
-    if(designation == 3){
+    if (designation == 3) {
       x=500;
       y= 100;
       heading= 3;
     }  
-    if(designation == 2){
+    if (designation == 2) {
       x=100;
       y= 300;
       heading= 0;
-
     }  
-    if(designation == 1){
+    if (designation == 1) {
       x=500;
       y= 300;
       heading= 3;
-
     } 
     size=20;
     lim = 3;
@@ -209,14 +206,38 @@ public class Player implements Displayable {
   }
 
   public void display() {
+    int f1, f2, f3;
+    f1 = 0;
+    f2 = 0;
+    f3 = 0;
+    if (designation == 0) {
+      f1 =255;
+      f2 =255;
+      f3 = 255;
+    }
+    if (designation == 3) {
+      f1 =255;
+      f2 =0;
+      f3 = 0;
+    }  
+    if (designation == 2) {
+      f1 =0;
+      f2 =255;
+      f3 = 0;
+    }  
+    if (designation == 1) {
+      f1 =0;
+      f2 =0;
+      f3 = 255;
+    } 
     if (hp <= 1) {
-      fill(255);
+      fill(f1,f2,f3);
       ellipse(x, y, 9, 9);
     } else {
       if (hasLazer==0) {
         noStroke();
       }
-      fill(255);
+      fill(f1,f2,f3);
       ///rect(x+ (20* cos(heading)),y + (20 *sin(heading)),30 ,20);
       //ellipse(x, y, 14, 14);
       triangle((float)(x + (20 * Math.cos(heading))), (float)(y + (20 * Math.sin(heading))), 
