@@ -202,7 +202,7 @@ public void beenShot() {
     for (int k = 0; k < displayables.size(); k ++) {
       if (displayables.get(k) instanceof Bullet) {
         if (players.get(i).inTriangle(((Bullet)displayables.get(k)).x, ((Bullet)displayables.get(k)).y)) {
-          Bullet temp = (Bullet) moveables.get(i);
+          Bullet temp = (Bullet) displayables.get(k);
           temp.state=false;
           players.get(i).hp --;
         }
