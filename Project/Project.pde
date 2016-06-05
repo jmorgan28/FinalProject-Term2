@@ -21,17 +21,20 @@ ArrayList<Block> blocks= new ArrayList<Block>();
 ArrayList<Warp> warp = new ArrayList<Warp>();
 PFont c, s, n;
 
-
+String served = "127.0.0.1";
+String eastwood = "127.0.0.1";
 
 int playerCount=0;
 int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2;
 
+char current;
 Server server;
 Client client;
+int menutime;
 
 public void setup() {
   size(600, 400);
@@ -44,6 +47,7 @@ public void setup() {
   mouseClient=false;
   lazerout = false;
   stopdam = false;
+  menu2 =false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -78,32 +82,63 @@ public void makeMenu() {
   fill(255);
   text("Join as Client", 0, 300);
   if (mousePressed||mouseClient||mouseServer) {
-    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100)||mouseServer) {
-      mouseServer=true;
-      background(255, 0, 0); 
-      textFont(n, 36);
-      fill(255);
-      text("Input Player Number 1 -4", 0, 150);
+    menutime ++;
+    if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100)||mouseServer || menu2) {
+      if (! menu2) {
+        mouseServer=true;
+        background(255, 0, 0); 
+        textFont(n, 20);
+        fill(255);
+        text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
+        if (keyPressed) {
+          if (key != ENTER && served == "127.0.0.1") {
+            served = "";
+          }
+          if (key == BACKSPACE && served.length() > 0) {
+            served = served.substring(0, served.length() -1);
+          } else {
+            current = key;
+            if (menutime % 10 == 0) {
+              served += current;
+            }
+            println(served);
+            if (key == ENTER) {
+              menu2 = true;
+            }
+          }
+        }
+        PFont br = createFont("Arial", 16, true);
+        textFont(br, 20);
+        fill(255);
+        text(served, 200, 300);
+      } else {
+        mouseServer=true;
+        background(255, 0, 0); 
+        textFont(n, 36);
+        fill(255);
+        text("Input Player Number 1 -4", 0, 150);
 
-      if (keyPressed) {
-        if (key=='1') {
-          playerCount =1;
-          amServer = true;
-        }
-        if (key=='2') {
-          playerCount =2;
-          amServer = true;
-        }
-        if (key=='3') {
-          playerCount =3;
-          amServer = true;
-        }
-        if (key=='4') {
-          playerCount =4;
-          amServer = true;
+        if (keyPressed) {
+          if (key=='1') {
+            playerCount =1;
+            amServer = true;
+          }
+          if (key=='2') {
+            playerCount =2;
+            amServer = true;
+          }
+          if (key=='3') {
+            playerCount =3;
+            amServer = true;
+          }
+          if (key=='4') {
+            playerCount =4;
+            amServer = true;
+          }
         }
       }
-    } 
+    }
+
     if ((mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250)||mouseClient) {
       mouseClient=true;
       background(255, 0, 0); 
@@ -487,7 +522,7 @@ public void draw() {
     makeMenu();
     if (amServer&&server==null) {
       myPlayer = 0;
-      server=new Server(this, 6666, "127.0.0.1" ); 
+      server=new Server(this, 6666, served ); 
       menu=false;
     }
     if (amClient&&client==null) {
