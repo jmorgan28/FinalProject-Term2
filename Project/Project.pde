@@ -115,9 +115,9 @@ public void makeMenu() {
       } else {
         mouseServer=true;
         background(255, 0, 0); 
-        textFont(n, 36);
+        textFont(n, 20);
         fill(255);
-        text("Input Player Number 1 -4", 0, 150);
+        text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
 
         if (keyPressed) {
           if (key=='1') {
@@ -171,9 +171,9 @@ public void makeMenu() {
       } else {
         mouseClient=true;
         background(255, 0, 0); 
-        textFont(n, 36);
+        textFont(n, 20);
         fill(255);
-        text("Input Player Number 1 -4", 0, 150);
+        text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
 
         if (keyPressed) {
           if (key=='1') {
@@ -557,7 +557,7 @@ public void draw() {
     }
     if (amClient&&client==null) {
       try {
-        client=new Client(this, "127.0.0.1", 6666);
+        client=new Client(this, served, 6666);
         String s=client.readString();
         myPlayer=Integer.parseInt(s.substring(s.indexOf(":")+1));
         clientCount=myPlayer;
