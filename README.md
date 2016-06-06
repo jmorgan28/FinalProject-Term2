@@ -1,5 +1,14 @@
 # FinalProject-Term2
 
+Team Name: Comsic Partiers<br>
+Project Name: Astro Party Clone Wars <br>
+Description:<br>
+
+How to Run:<br>
+
+
+<br>Development Log<br>
+
 5/14/16 <br>
 
 Jackson and Matthew:<br>
@@ -73,8 +82,8 @@ Jackson: <br>
 5/26/16 <br>
 
 Jackson: <br>
-- made lazer pickup class<br>
-- made ability to shoot lazer and lazer class pickup<br>
+- made laser pickup class<br>
+- made ability to shoot laser and laser class pickup<br>
 - made it so when collide with wall can still move (not reset to place) so that you can turn and get away from wall<br>
 
 5/29/16 <br>
@@ -111,10 +120,10 @@ Jackson: <br>
 - made lazer work correctly on server side<br>
 
 
-<br> !!!!!!!!<br> REMINDER MAKE LAZER DO DAMAGE FOR BOTH TRIANGLE AND CIRCLE FORMS<br>
+6/3/16 - 6/5/16 <br>
+- Made collision with laser work<br>
+- Stopped infinite laser glitch <br>
+- Made different spawn points and colors for each player<br>
+- Got rid of glitch where error would occur when shooting someone<br>
+- Made new menu screen where you can input a server so you don't have to just play locally<br>
 
-<br>
-To Do:<br>
-online<br>
-collision detection<br>
-features and stages<br>
