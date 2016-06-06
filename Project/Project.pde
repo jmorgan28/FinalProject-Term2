@@ -74,13 +74,14 @@ public void keyPressed() {
   }
   if (key != ENTER && served == "127.0.0.1") {
     served = "";
-  }
-  if (key == BACKSPACE && served.length() > 0) {
-    served = served.substring(0, served.length() -1);
-  } else if (key==ENTER) {
-    menu2 = true;
   } else {
-    served += key;
+    if (key == BACKSPACE && served.length() > 0) {
+      served = served.substring(0, served.length() -1);
+    } else if (key==ENTER) {
+      menu2 = true;
+    } else {
+      served += key;
+    }
   }
 }
 
