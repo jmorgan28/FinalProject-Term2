@@ -1,5 +1,14 @@
 # FinalProject-Term2
 
+Team Name: Comsic Partiers<br>
+Project Name: Astro Party Clone Wars <br>
+Description:<br>
+
+How to Run:<br>
+
+
+<br>Development Log<br>
+
 5/14/16 <br>
 
 Jackson and Matthew:<br>
@@ -65,17 +74,26 @@ Jackson: <br>
 - made menu where you can select to be a player or client<br>
 - if server is picked must pick player amount (not finished no have to hold mouse and then press number for it to work. Does not send player count accurately to client)<br>
 
+Matthew:<br>
+- Set up all of the error handling (tries, catches and the like) to help it not crash when there are concurrency issues
+
 5/25/16 <br>
 
 Jackson: <br>
 - made game detect if you collided with the wall. resets position if you did.<br>
-
+Matthew:<br>
+- did some menu stuff
 5/26/16 <br>
 
 Jackson: <br>
-- made lazer pickup class<br>
-- made ability to shoot lazer and lazer class pickup<br>
+- made laser pickup class<br>
+- made ability to shoot laser and laser class pickup<br>
 - made it so when collide with wall can still move (not reset to place) so that you can turn and get away from wall<br>
+
+5/27/16 <br>
+Matthew:<br>
+- made menu more functional for more players
+- set up a designation system for sending messages
 
 5/29/16 <br>
 
@@ -92,6 +110,9 @@ Jackson: <br>
 - adjusted display for this mode<br>
 - adjusted movement for this mode<br>
 
+5/31/16 <br>
+Matthew:<br>
+- worked on lowering lag between clients
 6/1/16 <br>
 
 Jackson: <br>
@@ -111,10 +132,23 @@ Jackson: <br>
 - made lazer work correctly on server side<br>
 
 
-<br> !!!!!!!!<br> REMINDER MAKE LAZER DO DAMAGE FOR BOTH TRIANGLE AND CIRCLE FORMS<br>
-
-<br>
-To Do:<br>
-online<br>
-collision detection<br>
-features and stages<br>
+6/3/16 - 6/5/16 <br>
+Jackson: <br>
+- Made collision with laser work<br>
+- Stopped infinite laser glitch <br>
+- Made different spawn points and colors for each player<br>
+- Got rid of glitch where error would occur when shooting someone<br>
+- Made new menu screen where you can input a server so you don't have to just play locally<br>
+- 
+6/3/16<br>
+Matthew:<br>
+- worked on lowering lag between clients and clients now have equivalent lag<br>
+6/4/16<br>
+Matthew:<br>
+-everyone can hear<br>
+-they all know what everyone is doing and at the right speed<br>
+6/5/16<br>
+Matthew:<br>
+-fixed health restore across clients<br>
+-fixed using the lazer power up across clients<br>
+-clients no longer randomly disappear from people's screens<br>
