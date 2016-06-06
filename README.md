@@ -74,17 +74,26 @@ Jackson: <br>
 - made menu where you can select to be a player or client<br>
 - if server is picked must pick player amount (not finished no have to hold mouse and then press number for it to work. Does not send player count accurately to client)<br>
 
+Matthew:<br>
+- Set up all of the error handling (tries, catches and the like) to help it not crash when there are concurrency issues
+
 5/25/16 <br>
 
 Jackson: <br>
 - made game detect if you collided with the wall. resets position if you did.<br>
-
+Matthew:<br>
+- did some menu stuff
 5/26/16 <br>
 
 Jackson: <br>
 - made laser pickup class<br>
 - made ability to shoot laser and laser class pickup<br>
 - made it so when collide with wall can still move (not reset to place) so that you can turn and get away from wall<br>
+
+5/27/16 <br>
+Matthew:<br>
+- made menu more functional for more players
+- set up a designation system for sending messages
 
 5/29/16 <br>
 
@@ -101,6 +110,9 @@ Jackson: <br>
 - adjusted display for this mode<br>
 - adjusted movement for this mode<br>
 
+5/31/16 <br>
+Matthew:<br>
+- worked on lowering lag between clients
 6/1/16 <br>
 
 Jackson: <br>
@@ -127,4 +139,16 @@ Jackson: <br>
 - Made different spawn points and colors for each player<br>
 - Got rid of glitch where error would occur when shooting someone<br>
 - Made new menu screen where you can input a server so you don't have to just play locally<br>
-
+- 
+6/3/16<br>
+Matthew:<br>
+- worked on lowering lag between clients and clients now have equivalent lag
+6/4/16<br>
+Matthew:<br>
+-everyone can hear
+-they all know what everyone is doing and at the right speed
+6/5/16<br>
+Matthew:<br>
+-fixed health restore across clients
+-fixed using the lazer power up across clients
+-clients no longer randomly disappear from people's screens
