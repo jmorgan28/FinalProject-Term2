@@ -142,13 +142,13 @@ Jackson: <br>
 - 
 6/3/16<br>
 Matthew:<br>
-- worked on lowering lag between clients and clients now have equivalent lag
+- worked on lowering lag between clients and clients now have equivalent lag<br>
 6/4/16<br>
 Matthew:<br>
--everyone can hear
--they all know what everyone is doing and at the right speed
+-everyone can hear<br>
+-they all know what everyone is doing and at the right speed<br>
 6/5/16<br>
 Matthew:<br>
--fixed health restore across clients
--fixed using the lazer power up across clients
--clients no longer randomly disappear from people's screens
+-fixed health restore across clients<br>
+-fixed using the lazer power up across clients<br>
+-clients no longer randomly disappear from people's screens<br>
