@@ -90,7 +90,7 @@ public void keyPressed() {
 public void makeMenu() {
   background(255, 0, 0); 
   fill(255);
-  println(served);
+  //println(served);
   menutime ++;
   if (!mouseServer&&!mouseClient) {
     textFont(c, 36);
