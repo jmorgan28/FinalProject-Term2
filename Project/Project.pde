@@ -30,7 +30,7 @@ int myPlayer=0;
 int lazerTime = 0;
 int clientCount = 0;
 
-boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2;
+boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServer, lazerout, stopdam, menu2, end;
 
 char current;
 Server server;
@@ -49,6 +49,7 @@ public void setup() {
   lazerout = false;
   stopdam = false;
   menu2 =false;
+  end = false;
   displayables.add(new Block(0, 0, 20, 400, 100, false));
   displayables.add(new Block(580, 0, 20, 400, 100, false));
   displayables.add(new Block(20, 0, 560, 20, 100, false));
@@ -80,8 +81,8 @@ public void keyPressed() {
     } else if (key==ENTER) {
       menu2 = true;
     } else {
-      if(!menu2){
-      served += key;
+      if (!menu2) {
+        served += key;
       }
     }
   }
@@ -366,6 +367,20 @@ public String parse(String s) {
   return s;
 }
 
+public void gameOver() {
+  int g = 0;
+  for (int i = 0; i <players.size(); i++) {
+    if (players.get(i).hp == 0) {
+      g ++;
+    }
+  }
+  if (g == players.size() -1) {
+    end = true;
+  }
+}
+
+
+
 public void playerMovement() {
   try {
     Player p=players.get(myPlayer);
@@ -450,6 +465,7 @@ public void draw() {
       }
     }
   } else {
+    if(!end){
     if (clientCount>=playerCount-1&&!started) {
       for (int i = 0; i < playerCount; i++) {
         Player p = new Player(i);
@@ -467,6 +483,7 @@ public void draw() {
     collision();
     playCollide();
     warped();
+    gameOver();
     send(players.get(myPlayer));
     for ( Moveable m : moveables) {
       if (m.state()) {
@@ -499,4 +516,10 @@ public void draw() {
       }
     }
   }
+  }
+  else{
+    background(255,0,0);
+    PFont br = createFont("Arial", 16, true);
+    textFont(br, 20);
+    text("Game Over", 200, 300);}
 }
