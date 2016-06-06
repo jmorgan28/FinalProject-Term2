@@ -80,7 +80,9 @@ public void keyPressed() {
     } else if (key==ENTER) {
       menu2 = true;
     } else {
+      if(!menu2){
       served += key;
+      }
     }
   }
 }
@@ -88,6 +90,7 @@ public void keyPressed() {
 public void makeMenu() {
   background(255, 0, 0); 
   fill(255);
+  println(served);
   menutime ++;
   if (!mouseServer&&!mouseClient) {
     textFont(c, 36);
