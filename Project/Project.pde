@@ -72,6 +72,16 @@ public void keyPressed() {
   if (key=='d') { 
     dDown=true;
   }
+  if (key != ENTER && served == "127.0.0.1") {
+    served = "";
+  }
+  if (key == BACKSPACE && served.length() > 0) {
+    served = served.substring(0, served.length() -1);
+  } else if (key==ENTER) {
+    menu2 = true;
+  } else {
+    served += key;
+  }
 }
 
 public void makeMenu() {
@@ -83,92 +93,34 @@ public void makeMenu() {
     text("Join as Server", 0, 150);
     textFont(s, 36);
     text("Join as Client", 0, 300);
-  }
-  if (((mousePressed&&(mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100))||mouseServer)&&!menu2) {
-    mouseServer=true;
-    textFont(n, 20);
-    if (! menu2) {
-      text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
-      if (keyPressed) {
-        if (key != ENTER && served == "127.0.0.1") {
-          served = "";
-        }
-        if (key == BACKSPACE && served.length() > 0) {
-          served = served.substring(0, served.length() -1);
-        } else if (key==ENTER) {
-          menu2 = true;
-        } else if (menutime % 10 == 0) {
-          served += current;
-        }
-      }
+    if (mousePressed&&mouseX >= 0 && mouseX <= 250 && mouseY<= 150 && mouseY>= 100) {
+      mouseServer=true;
+    } else if (mousePressed&&mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250) {
+      mouseClient=true;
     }
-    PFont br = createFont("Arial", 16, true);
-    textFont(br, 20);
-    text(served, 200, 300);
-  } else if (((mousePressed&&(mouseX >= 0 && mouseX <= 250 && mouseY<= 300 && mouseY>= 250))||mouseClient)&&!menu2) {
-    mouseClient=true;
+  } else {
     textFont(n, 20);
     if (! menu2) {
       text("Input Server I.P. address then press enter. Do not move mouse", 0, 150);
-      if (keyPressed) {
-        if (key != ENTER && served == "127.0.0.1") {
-          served = "";
-        }
-        if (key == BACKSPACE && served.length() > 0) {
-          served = served.substring(0, served.length() -1);
-        } else {
-          current=key;
-          if (key == ENTER) {
-            menu2 = true;
-          } else if (menutime % 10 == 0) {
-            served += current;
-          }
-        }
-      }
       PFont br = createFont("Arial", 16, true);
       textFont(br, 20);
       text(served, 200, 300);
-    }
-  } 
-  if (menu2) {
-    text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
-    if (keyPressed) {
-      if (key=='1') {
-        playerCount =1;
-        if (mouseServer) {
-          amServer=true;
-        } else {
-          amClient = true;
-        }
-      }
-      if (key=='2') {
-        playerCount =2;
-        if (mouseServer) {
-          amServer=true;
-        } else {
-          amClient = true;
-        }
-      }
-      if (key=='3') {
-        playerCount =3;
-        if (mouseServer) {
-          amServer=true;
-        } else {
-          amClient = true;
-        }
-      }
-      if (key=='4') {
-        playerCount =4;
-        if (mouseServer) {
-          amServer=true;
-        } else {
-          amClient = true;
+    } else {
+      text("Wait for everyone to input ip. Then input Player Number 1 -4. ", 0, 150);
+      if (keyPressed) {
+        current=key;
+        if (current=='1' ||current=='2'||current=='3'||current=='4') {
+          playerCount =Integer.parseInt(""+current);
+          if (mouseServer) {
+            amServer=true;
+          } else {
+            amClient = true;
+          }
         }
       }
     }
   }
 }
-
 
 public void collision() {
   for (int i = 0; i < moveables.size(); i ++) {
@@ -260,7 +212,7 @@ public void playCollide() {
   }
 }
 
-public void warped() { // too be made accurate later
+public void warped() { 
   for (int i = 0; i < moveables.size(); i ++) {
     for (int k = 0; k < warp.size(); k ++) { 
       if (moveables.get(i) instanceof Bullet) {
@@ -276,7 +228,6 @@ public void warped() { // too be made accurate later
     }
   }
 }
-
 
 public void keyReleased() {
   if (key=='a') {
