@@ -174,3 +174,6 @@ Matthew:<br>
 Jackson: <br>
 - Made game over screen<br>
 - Fixed stuff<br>
+Matthew: <br>
+- Made game over screen display winning player<br>
+- improved/fixed in game ip input<br>
