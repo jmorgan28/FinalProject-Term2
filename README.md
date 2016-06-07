@@ -3,7 +3,7 @@
 Team Name: Comsic Partiers<br>
 Project Name: Astro Party Clone Wars <br>
 Description:<br>
-- A online multiplayer version of the game Astro Party<br>
+- A online multiplayer version of the game Astro Party (currently works on one computer and on a local network sometimes)<br>
 - Up to four players<br>
 - Can shoot and rotate. <br>
 - Can get pickups and speed boosts<br>
