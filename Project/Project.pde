@@ -370,7 +370,7 @@ public String parse(String s) {
 public void gameOver() {
   int g = 0;
   for (int i = 0; i <players.size(); i++) {
-    if (players.get(i).hp == 0) {
+    if (!players.get(i).state()) {
       g ++;
     }
   }
@@ -465,61 +465,61 @@ public void draw() {
       }
     }
   } else {
-    if(!end){
-    if (clientCount>=playerCount-1&&!started) {
-      for (int i = 0; i < playerCount; i++) {
-        Player p = new Player(i);
-        displayables.add(p);
-        positionables.add(p);
-        players.add(p);
+    if (!end) {
+      if (clientCount>=playerCount-1&&!started) {
+        for (int i = 0; i < playerCount; i++) {
+          Player p = new Player(i);
+          displayables.add(p);
+          positionables.add(p);
+          players.add(p);
+        }
+        started=true;
       }
-      started=true;
-    }
-    if (lazerout) {
-      lazerTime ++;
-    }
-    playerMovement();
-    beenShot();
-    collision();
-    playCollide();
-    warped();
-    gameOver();
-    send(players.get(myPlayer));
-    for ( Moveable m : moveables) {
-      if (m.state()) {
-        m.move();
-        m.collide(positionables);
+      if (lazerout) {
+        lazerTime ++;
       }
-    }
+      playerMovement();
+      beenShot();
+      collision();
+      playCollide();
+      warped();
+      gameOver();
+      send(players.get(myPlayer));
+      for ( Moveable m : moveables) {
+        if (m.state()) {
+          m.move();
+          m.collide(positionables);
+        }
+      }
 
-    for ( Displayable d : displayables) {
-      if (d.state()) {
-        d.display();
+      for ( Displayable d : displayables) {
+        if (d.state()) {
+          d.display();
+        }
       }
-    }
 
-    for (int i = moveables.size() - 1; i >= 0; i--) {
-      if (!moveables.get(i).state()) {
-        moveables.remove(i);
+      for (int i = moveables.size() - 1; i >= 0; i--) {
+        if (!moveables.get(i).state()) {
+          moveables.remove(i);
+        }
       }
-    }
 
-    for (int i = displayables.size() - 1; i >= 0; i--) {
-      if (!displayables.get(i).state()&&!(displayables.get(i) instanceof Player)) {
-        displayables.remove(i);
+      for (int i = displayables.size() - 1; i >= 0; i--) {
+        if (!displayables.get(i).state()&&!(displayables.get(i) instanceof Player)) {
+          displayables.remove(i);
+        }
       }
-    }
 
-    for (int i = positionables.size() - 1; i >= 0; i--) {
-      if (!positionables.get(i).state()) {
-        positionables.remove(i);
+      for (int i = positionables.size() - 1; i >= 0; i--) {
+        if (!positionables.get(i).state()) {
+          positionables.remove(i);
+        }
       }
+    } else {
+      background(255, 0, 0);
+      PFont br = createFont("Arial", 16, true);
+      textFont(br, 20);
+      text("Game Over", 200, 300);
     }
   }
-  }
-  else{
-    background(255,0,0);
-    PFont br = createFont("Arial", 16, true);
-    textFont(br, 20);
-    text("Game Over", 200, 300);}
 }
