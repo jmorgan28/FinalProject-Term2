@@ -3,8 +3,24 @@
 Team Name: Comsic Partiers<br>
 Project Name: Astro Party Clone Wars <br>
 Description:<br>
+- A online multiplayer version of the game Astro Party<br>
+- Up to four players<br>
+- Can shoot and rotate. <br>
+- Can get pickups and speed boosts<br>
+
 
 How to Run:<br>
+- Click Server if you are to be the Server<br>
+- Click Client if you are to be Client<br> 
+- Press enter if you wish to play locally<br>
+- Type ip address if you want to play online<br>
+- Press enter<br>
+- Click the number of players (starting with the Server)<br>
+- Use the "a" key to shoot.
+- Use the "d" key to rotate.
+- Run over the blue to pick up a laser (next shot will be lazer which can go through walls)<br>
+- Run over Yellow for a speed boost<br>
+- When you are shot you go into pilot mode (after certain time will return to ship mode if not shot)<br>
 
 
 <br>Development Log<br>
