@@ -35,7 +35,7 @@ boolean aDown, dDown, menu, amServer, amClient, started, mouseClient, mouseServe
 char current;
 Server server;
 Client client;
-int menutime;
+int menutime,winner;
 
 public void setup() {
   size(600, 400);
@@ -369,9 +369,13 @@ public String parse(String s) {
 
 public void gameOver() {
   int g = 0;
+  winner=-1;
   for (int i = 0; i <players.size(); i++) {
     if (!players.get(i).state()) {
       g ++;
+    }
+    else{
+      winner=i;
     }
   }
   if (g == players.size() -1) {
@@ -519,7 +523,8 @@ public void draw() {
       background(255, 0, 0);
       PFont br = createFont("Arial", 16, true);
       textFont(br, 20);
-      text("Game Over", 200, 300);
+      text("Game Over", 200, 100);
+      text("Player " +winner+" Wins", 200, 250);
     }
   }
 }
