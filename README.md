@@ -168,3 +168,9 @@ Matthew:<br>
 -fixed health restore across clients<br>
 -fixed using the lazer power up across clients<br>
 -clients no longer randomly disappear from people's screens<br>
+
+
+6/6/16 <br>
+Jackson: <br>
+- Made game over screen<br>
+- Fixed stuff<br>
